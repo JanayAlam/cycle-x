@@ -9,7 +9,16 @@ class ProfileService {
         return Profile.findOne({ [key]: value });
     }
 
-    static async create({ firstName, lastName, profilePhoto, userId, bio, dob, rank, mute }) {
+    static async create({
+        firstName,
+        lastName,
+        profilePhoto,
+        userId,
+        bio,
+        dob,
+        rank,
+        mute,
+    }) {
         let profile = await this.findByProperty('user', userId);
         if (profile) {
             throw BadRequestError(
