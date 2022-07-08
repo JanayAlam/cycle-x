@@ -29,7 +29,6 @@ const profileSchema = new Schema(
         rank: {
             type: Schema.Types.ObjectId,
             ref: 'Rank',
-            required: true,
         },
         user: {
             type: Schema.Types.ObjectId,
@@ -39,7 +38,6 @@ const profileSchema = new Schema(
         mute: {
             type: Schema.Types.ObjectId,
             ref: 'Mute',
-            required: true,
         },
     },
     { timestamps: true }
