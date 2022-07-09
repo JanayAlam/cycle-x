@@ -17,6 +17,7 @@ export default {
     text-align: center;
     font-size: 1.2rem;
     font-family: 'Albert Sans', sans-serif;
+    margin-top: 50px;
 }
 
 .not-found-body h1 {

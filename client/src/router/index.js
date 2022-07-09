@@ -1,3 +1,5 @@
+import Login from '@/views/auth/Login.vue';
+import Register from '@/views/auth/Register.vue';
 import PageNotFound from '@/views/errors/PageNotFound';
 import Home from '@/views/Home.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -7,6 +9,16 @@ const routes = [
         path: '/',
         name: 'home',
         component: Home,
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register,
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
     },
     {
         path: '/:catchAll(.*)*',
