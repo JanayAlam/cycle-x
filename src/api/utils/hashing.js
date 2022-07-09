@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const {InternalServerError} = require("../errors/apiErrors");
 
 /**
  * Hash a string
@@ -6,8 +7,17 @@ const bcrypt = require('bcrypt');
  * @returns {Promise} hashed value
  */
 const generateHash = async (str) => {
-    const saltValue = process.env.SALT || 10;
+    let saltValue = 10;
+    try {
+        if (process.env.SALT) {
+            saltValue = Number(process.env.SALT);
+        }
+    } catch (err) {
+        console.log(err)
+        throw new InternalServerError('Salt number conversion error')
+    }
     const salt = await bcrypt.genSalt(saltValue);
+
     return bcrypt.hash(str, salt);
 };
 

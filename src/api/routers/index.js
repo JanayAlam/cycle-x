@@ -3,6 +3,10 @@ const routes = [
         path: '/auth',
         router: require('./auth'),
     },
+    {
+        path: '/users',
+        router: require('./user'),
+    },
 ];
 
 module.exports = (app) => {

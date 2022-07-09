@@ -18,6 +18,7 @@ module.exports = (app) => {
                 err.message || 'Something went wrong'
             );
         }
+        console.log(err);
         // returning the error message
         return res.status(code).json({
             name: err.name,

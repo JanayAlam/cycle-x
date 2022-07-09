@@ -5,7 +5,7 @@ const userSchema = new Schema(
         nid: {
             type: String,
             trim: true,
-            maxlength: 10,
+            maxlength: 11,
             minlength: 4,
             required: true,
         },
