@@ -1,7 +1,9 @@
-const { BadRequestError } = require('../errors/apiErrors');
+const { AuthenticationError } = require('../errors/apiErrors');
 const userService = require('./user');
 const profileService = require('./profile');
-const { generateHash } = require('../utils/hashing');
+const { UserResponse } = require('../models/view-models')
+const jwt = require('jsonwebtoken');
+const { generateHash, compareHashedString } = require('../utils/hashing');
 
 const register = async ({
     nid,
@@ -30,12 +32,20 @@ const register = async ({
         userId: user._id,
     });
     await profilePayload.save();
-    // 4: responding with the user object
+    // 4: respond with the user object
     return user;
 };
 
-const login = (email, password) => {
-    // TODO
+const login = async (email, password) => {
+    // 1: check for the user with email
+    const user = await userService.findByProperty('email', email);
+    if (!user) throw new AuthenticationError();
+    // 2: validate the password
+    const isMatched = await compareHashedString(password, user.password);
+    if (!isMatched) throw new AuthenticationError();
+    // 3: generate a jwt token and response back
+    const payload = new UserResponse(user);
+    return jwt.sign({...payload}, process.env.SECRET_KEY, { expiresIn: '4h' });
 };
 
 module.exports = {

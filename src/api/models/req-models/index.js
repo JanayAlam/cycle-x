@@ -1,3 +1,4 @@
 module.exports = {
-    authReqModel: require('./auth-req-model'),
+    registrationReqModel: require('./auth/register-req-model'),
+    loginReqModel: require('./auth/login-req-model'),
 };

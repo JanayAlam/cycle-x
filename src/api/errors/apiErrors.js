@@ -1,7 +1,7 @@
 class ApiError extends Error {
     /**
      * Constructor of ApiError Class.
-     * @param {String} msg Error message.
+     * @param message
      */
     constructor(message) {
         super();
@@ -18,7 +18,7 @@ class ApiError extends Error {
 class BadRequestError extends ApiError {
     /**
      * Error class for bad request error
-     * @param {String} msg Error message.
+     * @param message
      */
     constructor(message = 'Some fields are required') {
         super(message);
@@ -32,14 +32,14 @@ class BadRequestError extends ApiError {
     getCode = () => 400;
 }
 
-class UnauthorizationError extends ApiError {
+class AuthenticationError extends ApiError {
     /**
-     * Error class for unauthorization error.
-     * @param {String} msg Error message.
+     * Error class for authentication error.
+     * @param message
      */
-    constructor(message = 'User need to be authorized') {
+    constructor(message = 'Invalid credentials') {
         super(message);
-        this.name = 'UnauthorizeError';
+        this.name = 'AuthenticationError';
     }
 
     /**
@@ -49,14 +49,14 @@ class UnauthorizationError extends ApiError {
     getCode = () => 401;
 }
 
-class AuthenticationError extends ApiError {
+class UnAuthorizationError extends ApiError {
     /**
-     * Error class for authentication error.
-     * @param {String} msg Error message.
+     * Error class for un-authorization error.
+     * @param message
      */
-    constructor(message = 'Invalid credentials') {
+    constructor(message = 'User need to be authorized') {
         super(message);
-        this.name = 'AuthenticationError';
+        this.name = 'UnAuthorizeError';
     }
 
     /**
@@ -69,7 +69,7 @@ class AuthenticationError extends ApiError {
 class NotFoundError extends ApiError {
     /**
      * Error class for not found error.
-     * @param {String} msg Error message.
+     * @param message
      */
     constructor(message = 'Requested data not found') {
         super(message);
@@ -86,7 +86,7 @@ class NotFoundError extends ApiError {
 class ConflictError extends ApiError {
     /**
      * Error class for already exists things.
-     * @param {String} msg Error message.
+     * @param message
      */
     constructor(message = 'The data is already exist') {
         super(message);
@@ -103,7 +103,7 @@ class ConflictError extends ApiError {
 class NotAcceptableError extends ApiError {
     /**
      * Error class for not acceptable request.
-     * @param {String} msg Error message.
+     * @param message
      */
     constructor(message = 'The request is not acceptable') {
         super(message);
@@ -120,7 +120,7 @@ class NotAcceptableError extends ApiError {
 class InternalServerError extends ApiError {
     /**
      * Error class for not acceptable request.
-     * @param {String} msg Error message.
+     * @param message
      */
     constructor(message = 'Something went wrong') {
         super(message);
@@ -137,7 +137,7 @@ class InternalServerError extends ApiError {
 module.exports = {
     ApiError,
     BadRequestError,
-    UnauthorizationError,
+    UnAuthorizationError,
     AuthenticationError,
     NotFoundError,
     ConflictError,
