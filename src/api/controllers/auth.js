@@ -10,17 +10,18 @@ const register = async (req, res, next) => {
      *  - email
      *  - password
      */
-    const { nid, firstName, lastName, email, password } = req.body;
+    const { nid, firstName, lastName, email, dob, password } = req.body;
     try {
         const user = await authService.register({
             nid,
             firstName,
             lastName,
+            dob,
             email,
             password,
         })
         const response = new UserResponse(user);
-        res.status(201).send({ user: response });
+        res.status(201).send({ ...response });
     } catch (err) {
         next(err);
     }

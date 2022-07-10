@@ -9,6 +9,8 @@ class ProfileResponse {
         this.rank = data.rank;
         this.user = data.user;
         this.mute = data.mute;
+        this.createdAt = data.createdAt;
+        this.updatedAt = data.updatedAt;
     }
 }
 

@@ -11,6 +11,7 @@ const register = async ({
     firstName,
     lastName,
     password,
+    dob,
     roles,
     isEmailVerified,
 }) => {
@@ -29,9 +30,10 @@ const register = async ({
     const profilePayload = await profileService.create({
         firstName,
         lastName,
+        dob,
         userId: user._id,
     });
-    await profilePayload.save();
+    const profile =await profilePayload.save();
     // 4: respond with the user object
     return user;
 };

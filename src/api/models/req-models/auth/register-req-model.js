@@ -14,9 +14,11 @@ const schema = Joi.object({
         .max(150)
         .required(),
 
-    firstName: Joi.string().alphanum().min(3).max(15).required(),
+    firstName: Joi.string().min(3).max(15).required(),
 
-    lastName: Joi.string().alphanum().min(3).max(15).required(),
+    lastName: Joi.string().min(3).max(15).required(),
+
+    dob: Joi.date().raw().required(),
 
     password: Joi.string().min(4).required(),
 
