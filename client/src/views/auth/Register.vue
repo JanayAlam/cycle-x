@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="card card-body mt-5 c-card p-5">
-                    <RegisterForm :submitHandler="submitRegistrationHandler" :data="data" :errors="errors" />
+                    <RegisterForm :submitHandler="submitHandler" :data="state.data" :v$="v$" />
                 </div>
             </div>
         </div>
@@ -12,38 +12,62 @@
 
 <script>
 import RegisterForm from '@/components/forms/RegisterForm';
+import { computed } from '@vue/reactivity';
+import useVuelidate from '@vuelidate/core';
+import { email, maxLength, minLength, required, sameAs } from '@vuelidate/validators';
+import { reactive } from 'vue';
 
 export default {
     name: 'Register',
     components: { RegisterForm },
-    created() {
+    setup(_props) {
         document.title = 'Register';
-    },
-    data() {
-        return {
-            errors: {},
+
+        const state = reactive({
             data: {
+                nid: '',
                 firstName: '',
                 lastName: '',
+                dob: '',
                 email: '',
                 password: '',
                 confirmPassword: '',
-                nid: '',
-                dob: new Date(),
-            },
-        }
+            }
+        });
+
+        // validations
+        const rules = computed(() => {
+            return {
+                nid: { required, minLength: minLength(4), maxLength: maxLength(11) },
+                firstName: { required, minLength: minLength(3), maxLength: maxLength(15) },
+                lastName: { required, minLength: minLength(3), maxLength: maxLength(15) },
+                email: { required, email },
+                dob: { required },
+                password: { required, minLength: minLength(4) },
+                confirmPassword: { required, sameAs: sameAs(state.data.password) }
+            }
+        });
+        const v$ = useVuelidate(rules, state.data);
+
+        return { v$, state };
     },
     methods: {
-        validate() {
-            this.errors.firstName = 'First name is required';
-            this.errors.lastName = 'Last name is required';
-            this.errors.email = 'Email is required';
+        async submitHandler() {
+            this.v$.$validate();
+            if (this.v$.$error) return;
+
+            try {
+                const user = await this.$store.dispatch('REGISTER', this.state.data);
+                console.log(user);
+                this.$router.push({ name: 'login' });
+            } catch (e) {
+                console.log(e.message);
+                // alert('Failed' + e.message);
+                // console.log(e.response.data.message);
+            }
+
         },
-        submitRegistrationHandler() {
-            this.validate();
-            console.log(this.data);
-        }
-    }
+    },
 }
 </script>
 
