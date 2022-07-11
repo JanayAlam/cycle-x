@@ -1,13 +1,21 @@
 <template>
     <div class="d-flex g-2 b-group">
-        <router-link :to="{ name: 'login' }" class="primary-clr">Login</router-link>
-        <router-link :to="{ name: 'register' }" class="ms-3 primary-clr register">Register</router-link>
+        <router-link :to="{ name: 'login' }" class="primary-clr"
+            :class="{ 'active': getAuthButtonActive.includes('login') }">Login
+        </router-link>
+        <router-link :to="{ name: 'register' }" class="ms-3 primary-clr register"
+            :class="{ 'active': getAuthButtonActive.includes('register') }">Register</router-link>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'AuthButtons',
+    computed: {
+        ...mapGetters(['getAuthButtonActive']),
+    },
 }
 </script>
 
@@ -20,7 +28,7 @@ export default {
     text-decoration: none;
 }
 
-.register {
+.active {
     text-decoration: underline !important;
     font-weight: 700;
 }

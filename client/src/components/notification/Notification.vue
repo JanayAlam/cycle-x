@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { mapActions } from 'vuex';
 
 export default {
@@ -42,7 +42,7 @@ export default {
         },
     },
     setup(_props) {
-        const timeout = reactive(null);
+        const timeout = ref(null);
 
         return { timeout };
     },

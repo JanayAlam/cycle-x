@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -21,7 +21,7 @@ export default {
     },
     created() {},
     setup() {
-        const state = reactive({})
+        const state = ref({})
 
         return { state }
     }

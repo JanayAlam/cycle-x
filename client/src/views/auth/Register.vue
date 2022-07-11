@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-10 offset-md-1">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
                 <div class="card card-body mt-5 c-card p-5">
                     <register-form :submitHandler="submitHandler" :data="state.data" :v$="v$" />
                 </div>
@@ -16,13 +16,16 @@ import { computed } from '@vue/reactivity';
 import useVuelidate from '@vuelidate/core';
 import { email, maxLength, minLength, required, sameAs } from '@vuelidate/validators';
 import { ref } from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, useStore } from 'vuex';
 
 export default {
     name: 'Register',
     components: { RegisterForm },
     setup(_props) {
+        const store = useStore();
         document.title = 'Register';
+
+        store.dispatch('activeAuthButton', 'register')
 
         const state = ref({
             data: {

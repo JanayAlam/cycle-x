@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-10 offset-md-1">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
                 <div class="card card-body mt-5 c-card p-5">
                     <login-form :submitHandler="submitHandler" :data="state.data" :v$="v$" />
                 </div>
@@ -15,8 +15,8 @@ import LoginForm from '@/components/forms/LoginForm.vue';
 import { computed } from '@vue/reactivity';
 import useVuelidate from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
-import { reactive } from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { ref } from 'vue';
+import { mapActions, mapGetters, useStore } from 'vuex';
 
 export default {
     name: 'Login',
@@ -25,9 +25,12 @@ export default {
         ...mapGetters(['getToken', 'getUser', 'getProfile']),
     },
     setup(_props) {
+        const store = useStore();
         document.title = 'Login';
 
-        const state = reactive({
+        store.dispatch('activeAuthButton', 'login')
+
+        const state = ref({
             data: {
                 email: '',
                 password: '',
@@ -41,7 +44,7 @@ export default {
                 password: { required, minLength: minLength(4) },
             }
         });
-        const v$ = useVuelidate(rules, state.data);
+        const v$ = useVuelidate(rules, state.value.data);
 
         return { v$, state };
     },
@@ -53,14 +56,14 @@ export default {
 
             try {
                 await this.$store.dispatch('login', this.state.data);
-                this.pushNotification({ type: 'info', msg: 'Successfully logged in.' })
+                this.pushNotification({ type: 'success', msg: 'Successfully logged in.' })
                 this.$router.replace({ name: 'home' });
             } catch (e) {
                 this.pushNotification({ type: 'danger', msg: e.message })
                 this.state.data.password = '';
             }
         },
-    },
+    }
 }
 </script>
 
