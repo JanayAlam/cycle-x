@@ -2,7 +2,7 @@
     <div class="nav-item dropdown">
         <button class="btn btn-sm dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
-            Full Name
+            {{ getProfile.firstName }} {{ getProfile.lastName }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
@@ -15,16 +15,21 @@
                 <hr class="dropdown-divider">
             </li>
             <li>
-                <router-link class="dropdown-item" to="/">Logout</router-link>
+                <router-link to="" class="dropdown-item" @click="logout">Logout</router-link>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'NavigationDropdown',
+    props: ['logout'],
+    computed: {
+        ...mapGetters(['getUser', 'getProfile']),
+    },
 }
 </script>
 

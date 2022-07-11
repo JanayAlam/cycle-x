@@ -22,7 +22,7 @@ export default {
     name: 'Login',
     components: { LoginForm },
     computed: {
-        ...mapGetters(['getUser']),
+        ...mapGetters([ 'getToken', 'getUser', 'getProfile']),
     },
     setup(_props) {
         document.title = 'Login';
@@ -51,15 +51,14 @@ export default {
             if (this.v$.$error) return;
 
             try {
-                await this.$store.dispatch('LOGIN', this.state.data);
+                await this.$store.dispatch('login', this.state.data);
+                console.log(this.getToken);
                 console.log(this.getUser);
-                this.$router.push({ name: 'home' });
+                console.log(this.getProfile);
+                this.$router.replace({ name: 'home' });
             } catch (e) {
                 console.log(e.message);
-                // alert('Failed' + e.message);
-                // console.log(e.response.data.message);
             }
-
         },
     },
 }

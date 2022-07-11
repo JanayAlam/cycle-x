@@ -6,6 +6,15 @@ import './assets/css/style.css';
 import router from './router';
 import store from './store';
 
+// axios configurations
 axios.defaults.baseURL = 'http://localhost:5000/api/v1';
 
-createApp(App).use(store).use(router).mount('#app');
+// vuex configuration
+require('@/store/subscriber');
+
+store
+    .dispatch('attempt', localStorage.getItem('token'))
+    .then(() => {
+        createApp(App).use(store).use(router).mount('#app');
+    })
+    .catch((err) => console.log(err));

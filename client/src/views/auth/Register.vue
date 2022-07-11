@@ -57,13 +57,11 @@ export default {
             if (this.v$.$error) return;
 
             try {
-                const user = await this.$store.dispatch('REGISTER', this.state.data);
+                const user = await this.$store.dispatch('register', this.state.data);
                 console.log(user);
                 this.$router.push({ name: 'login' });
             } catch (e) {
                 console.log(e.message);
-                // alert('Failed' + e.message);
-                // console.log(e.response.data.message);
             }
 
         },

@@ -1,7 +1,11 @@
 <template>
-    <div class="home">
-        <p>Email: {{ state.data.email }}</p>
-        <p>Email Verified: {{ state.data.isEmailVerified }}</p>
+    <div class="home" v-if="isAuthenticated">
+        <ol>
+            <li>{{ getUser.email }}</li>
+            <li>{{ getUser.isEmailVerified }}</li>
+            <li>{{ getProfile.firstName }}</li>
+            <li>{{ getProfile.lastName }}</li>
+        </ol>
     </div>
 </template>
 
@@ -13,15 +17,11 @@ export default {
     name: 'Home',
     components: {},
     computed: {
-        ...mapGetters(['getUser']),
+        ...mapGetters([ 'isAuthenticated', 'getUser', 'getProfile']),
     },
-    created() {
-        this.state.data = this.getUser;
-    },
+    created() {},
     setup() {
-        const state = reactive({
-            data: {}
-        })
+        const state = reactive({})
 
         return { state }
     }

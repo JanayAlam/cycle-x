@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: 'Buttons',
+    name: 'AuthButtons',
 }
 </script>
 

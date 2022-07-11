@@ -1,3 +1,4 @@
+import store from '@/store';
 import Login from '@/views/auth/Login.vue';
 import Register from '@/views/auth/Register.vue';
 import PageNotFound from '@/views/errors/PageNotFound';
@@ -14,11 +15,23 @@ const routes = [
         path: '/register',
         name: 'register',
         component: Register,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next(from);
+            }
+            next();
+        },
     },
     {
         path: '/login',
         name: 'login',
         component: Login,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next(from);
+            }
+            next();
+        },
     },
     {
         path: '/:catchAll(.*)*',

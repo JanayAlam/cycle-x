@@ -9,23 +9,33 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="ms-auto">
-                    <Dropdown v-if="isLoggedIn" />
-                    <Buttons v-else />
+                    <Dropdown v-if="isAuthenticated" :logout="accountLogout" />
+                    <AuthButtons v-else />
                 </div>
             </div>
         </div>
     </nav>
 </template>
 <script>
-import Buttons from '@/components/navigation/Buttons.vue';
+import AuthButtons from '@/components/navigation/AuthButtons.vue';
 import Dropdown from '@/components/navigation/Dropdown.vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'Navbar',
-    components: { Dropdown, Buttons },
+    components: { Dropdown, AuthButtons },
+    computed: {
+        ...mapGetters(['isAuthenticated'])
+    },
+    methods: {
+        ...mapActions(['logout']),
+        accountLogout() {
+            this.logout();
+            this.$router.replace({ name: 'login' });
+        },
+    },
     setup() {
-        const isLoggedIn = false;
-        return { isLoggedIn }
+        return {}
     }
 }
 </script>
