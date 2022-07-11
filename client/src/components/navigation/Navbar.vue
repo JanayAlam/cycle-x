@@ -28,9 +28,10 @@ export default {
         ...mapGetters(['isAuthenticated'])
     },
     methods: {
-        ...mapActions(['logout']),
+        ...mapActions(['logout', 'pushNotification']),
         accountLogout() {
             this.logout();
+            this.pushNotification({ type: 'info', msg: 'Logged out.' });
             this.$router.replace({ name: 'login' });
         },
     },

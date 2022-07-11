@@ -3,7 +3,7 @@ import axios from 'axios';
 
 store.subscribe((mutation) => {
     switch (mutation.type) {
-        case 'setToken':
+        case 'SET_TOKEN':
             if (mutation.payload) {
                 axios.defaults.headers.common[
                     'Authorization'

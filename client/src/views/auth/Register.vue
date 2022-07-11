@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-10 offset-md-1">
                 <div class="card card-body mt-5 c-card p-5">
-                    <RegisterForm :submitHandler="submitHandler" :data="state.data" :v$="v$" />
+                    <register-form :submitHandler="submitHandler" :data="state.data" :v$="v$" />
                 </div>
             </div>
         </div>
@@ -15,7 +15,8 @@ import RegisterForm from '@/components/forms/RegisterForm';
 import { computed } from '@vue/reactivity';
 import useVuelidate from '@vuelidate/core';
 import { email, maxLength, minLength, required, sameAs } from '@vuelidate/validators';
-import { reactive } from 'vue';
+import { ref } from 'vue';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'Register',
@@ -23,7 +24,7 @@ export default {
     setup(_props) {
         document.title = 'Register';
 
-        const state = reactive({
+        const state = ref({
             data: {
                 nid: '',
                 firstName: '',
@@ -44,21 +45,22 @@ export default {
                 email: { required, email },
                 dob: { required },
                 password: { required, minLength: minLength(4) },
-                confirmPassword: { required, sameAs: sameAs(state.data.password) }
+                confirmPassword: { required, sameAs: sameAs(state.value.data.password) }
             }
         });
-        const v$ = useVuelidate(rules, state.data);
+        const v$ = useVuelidate(rules, state.value.data);
 
         return { v$, state };
     },
     methods: {
+        ...mapActions(['pushNotification']),
         async submitHandler() {
             this.v$.$validate();
             if (this.v$.$error) return;
 
             try {
-                const user = await this.$store.dispatch('register', this.state.data);
-                console.log(user);
+                await this.$store.dispatch('register', this.state.data);
+                this.pushNotification({ type: 'success', msg: 'Successfully created a new account. Now login to your account.' })
                 this.$router.push({ name: 'login' });
             } catch (e) {
                 console.log(e.message);

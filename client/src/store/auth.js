@@ -14,18 +14,18 @@ export default {
         isAuthenticated: (state) => state.token && state.user && state.profile,
     },
     mutations: {
-        setToken: (state, token) => {
+        SET_TOKEN: (state, token) => {
             state.token = token;
         },
-        setUser: (state, user) => {
+        SET_USER: (state, user) => {
             state.user = user;
         },
-        setProfile: (state, profile) => {
+        SET_PROFILE: (state, profile) => {
             state.profile = profile;
         },
     },
     actions: {
-        register: async (_, payload) => {
+        register: async (_context, payload) => {
             try {
                 const response = await axios.post(`/auth/register`, payload);
                 return response.data;
@@ -49,25 +49,25 @@ export default {
         },
         attempt: async ({ commit, state }, token) => {
             if (token) {
-                commit('setToken', token);
+                commit('SET_TOKEN', token);
             }
             if (!state.token) return;
             try {
                 const response = await axios.get('/auth/me');
 
                 // setting user and profile object
-                commit('setUser', response.data.user);
-                commit('setProfile', response.data.profile);
+                commit('SET_USER', response.data.user);
+                commit('SET_PROFILE', response.data.profile);
             } catch (error) {
-                commit('setToken', null);
-                commit('setUser', null);
-                commit('setProfile', null);
+                commit('SET_TOKEN', null);
+                commit('SET_USER', null);
+                commit('SET_PROFILE', null);
             }
         },
-        logout: ({ commit }, payload) => {
-            commit('setToken', null);
-            commit('setUser', null);
-            commit('setProfile', null);
+        logout: ({ commit }, _payload) => {
+            commit('SET_TOKEN', null);
+            commit('SET_USER', null);
+            commit('SET_PROFILE', null);
         }
     },
 };

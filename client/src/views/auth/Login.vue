@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-10 offset-md-1">
                 <div class="card card-body mt-5 c-card p-5">
-                    <LoginForm :submitHandler="submitHandler" :data="state.data" :v$="v$" />
+                    <login-form :submitHandler="submitHandler" :data="state.data" :v$="v$" />
                 </div>
             </div>
         </div>
@@ -16,13 +16,13 @@ import { computed } from '@vue/reactivity';
 import useVuelidate from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
 import { reactive } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'Login',
     components: { LoginForm },
     computed: {
-        ...mapGetters([ 'getToken', 'getUser', 'getProfile']),
+        ...mapGetters(['getToken', 'getUser', 'getProfile']),
     },
     setup(_props) {
         document.title = 'Login';
@@ -46,15 +46,14 @@ export default {
         return { v$, state };
     },
     methods: {
+        ...mapActions(['pushNotification']),
         async submitHandler() {
             this.v$.$validate();
             if (this.v$.$error) return;
 
             try {
                 await this.$store.dispatch('login', this.state.data);
-                console.log(this.getToken);
-                console.log(this.getUser);
-                console.log(this.getProfile);
+                this.pushNotification({ type: 'info', msg: 'Successfully logged in.' })
                 this.$router.replace({ name: 'home' });
             } catch (e) {
                 console.log(e.message);
