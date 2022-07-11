@@ -1,4 +1,5 @@
 import axios from 'axios';
+import 'font-awesome-animation/css/font-awesome-animation.min.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import './assets/css/reset.css';

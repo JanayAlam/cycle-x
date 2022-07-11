@@ -34,6 +34,7 @@ export default {
             data: {
                 email: '',
                 password: '',
+                isLoading: false,
             }
         });
 
@@ -51,16 +52,21 @@ export default {
     methods: {
         ...mapActions(['pushNotification']),
         async submitHandler() {
+            this.state.data.isLoading = true;
             this.v$.$validate();
             if (this.v$.$error) return;
-
             try {
-                await this.$store.dispatch('login', this.state.data);
-                this.pushNotification({ type: 'success', msg: 'Successfully logged in.' })
+                await this.$store.dispatch('login', {
+                    email: this.state.data.email,
+                    password: this.state.data.password,
+                });
+                this.pushNotification({ type: 'success', msg: 'Successfully logged in.' });
+                this.state.data.isLoading = false;
                 this.$router.replace({ name: 'home' });
             } catch (e) {
                 this.pushNotification({ type: 'danger', msg: e.message })
                 this.state.data.password = '';
+                this.state.data.isLoading = false;
             }
         },
     }

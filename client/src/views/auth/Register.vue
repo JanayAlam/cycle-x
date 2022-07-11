@@ -36,6 +36,8 @@ export default {
                 email: '',
                 password: '',
                 confirmPassword: '',
+                agree: false,
+                isLoading: false,
             }
         });
 
@@ -58,17 +60,29 @@ export default {
     methods: {
         ...mapActions(['pushNotification']),
         async submitHandler() {
+            this.state.data.isLoading = true;
             this.v$.$validate();
+
             if (this.v$.$error) return;
 
             try {
-                await this.$store.dispatch('register', this.state.data);
-                this.pushNotification({ type: 'success', msg: 'Successfully created a new account. Now login to your account.' })
+                await this.$store.dispatch('register', {
+                    nid: this.state.data.nid,
+                    firstName: this.state.data.firstName,
+                    lastName: this.state.data.lastName,
+                    dob: this.state.data.dob,
+                    email: this.state.data.email,
+                    password: this.state.data.password,
+                    confirmPassword: this.state.data.confirmPassword,
+                });
+                this.pushNotification({ type: 'success', msg: 'Successfully created a new account. Now login to your account.' });
+                this.state.data.isLoading = false;
                 this.$router.push({ name: 'login' });
             } catch (e) {
                 this.pushNotification({ type: 'danger', msg: e.message });
                 this.state.data.password = '';
                 this.state.data.confirmPassword = '';
+                this.state.data.isLoading = false;
             }
 
         },
