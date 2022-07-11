@@ -1,5 +1,5 @@
 const User = require('../models/data-models/User');
-const { BadRequestError } = require('../errors/apiErrors');
+const { BadRequestError, ApiError} = require('../errors/apiErrors');
 
 const findByProperty = async (key, value) => {
     if (key === 'id') {

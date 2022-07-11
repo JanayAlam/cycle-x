@@ -63,7 +63,9 @@ export default {
                 this.pushNotification({ type: 'success', msg: 'Successfully created a new account. Now login to your account.' })
                 this.$router.push({ name: 'login' });
             } catch (e) {
-                console.log(e.message);
+                this.pushNotification({ type: 'danger', msg: e.message });
+                this.state.data.password = '';
+                this.state.data.confirmPassword = '';
             }
 
         },

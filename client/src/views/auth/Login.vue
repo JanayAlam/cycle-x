@@ -56,7 +56,8 @@ export default {
                 this.pushNotification({ type: 'info', msg: 'Successfully logged in.' })
                 this.$router.replace({ name: 'home' });
             } catch (e) {
-                console.log(e.message);
+                this.pushNotification({ type: 'danger', msg: e.message })
+                this.state.data.password = '';
             }
         },
     },
