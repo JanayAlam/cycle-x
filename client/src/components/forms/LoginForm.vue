@@ -20,7 +20,8 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">
+            <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" /> Login</button>
     </form>
 </template>
 

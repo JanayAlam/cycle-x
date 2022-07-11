@@ -77,7 +77,9 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">
+            <font-awesome-icon icon="fa-solid fa-right-to-bracket" /> Register
+        </button>
     </form>
 </template>
 
