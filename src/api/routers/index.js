@@ -7,6 +7,10 @@ const routes = [
         path: '/users',
         router: require('./user'),
     },
+    {
+        path: '/profiles',
+        router: require('./profile'),
+    },
 ];
 
 module.exports = (app) => {

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {reqValidator} = require('../middlewares');
 const {registrationReqModel: register, loginReqModel: login} = require('../models/req-models');
 const authController = require('../controllers/auth');
+const passport = require('passport');
 
 /**
  * register a new user into the system
@@ -16,6 +17,8 @@ router.post('/register', reqValidator(register), authController.register);
  * @visibility Public
  */
 router.post('/login', reqValidator(login), authController.login);
+
+router.get('/me', passport.authenticate('jwt', { session: false }), authController.getMe)
 
 router.get('/forget-password', () => {
 });

@@ -1,9 +1,10 @@
-const { AuthenticationError } = require('../errors/apiErrors');
+const { AuthenticationError, NotFoundError} = require('../errors/apiErrors');
 const userService = require('./user');
 const profileService = require('./profile');
-const { UserResponse } = require('../models/view-models')
+const { UserResponse, ProfileResponse} = require('../models/view-models')
 const jwt = require('jsonwebtoken');
 const { generateHash, compareHashedString } = require('../utils/hashing');
+const {user} = require("./index");
 
 const register = async ({
     nid,
@@ -46,11 +47,22 @@ const login = async (email, password) => {
     const isMatched = await compareHashedString(password, user.password);
     if (!isMatched) throw new AuthenticationError();
     // 3: generate a jwt token and response back
-    const payload = new UserResponse(user);
-    return jwt.sign({...payload}, process.env.SECRET_KEY, { expiresIn: '4h' });
+    return jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '2h' });
 };
+
+const getMe = async (userId) => {
+    // 1: get the user
+    const user = await userService.findByProperty('id', userId);
+    if (!user) throw new NotFoundError('User not found with the provided id');
+    // 2: get the profile
+    const profile = await profileService.findByProperty('user', userId);
+    if (!profile) throw new NotFoundError('Profile not found with the provided user id');
+    // 3: respond back the payload
+    return { user, profile };
+}
 
 module.exports = {
     register,
     login,
+    getMe,
 };
