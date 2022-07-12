@@ -1,5 +1,6 @@
-const { auth: authService } = require('../services');
+const { auth: authService, user: userService } = require('../services');
 const {UserResponse, ProfileResponse} = require("../models/view-models");
+const {BadRequestError, NotFoundError} = require("../errors/apiErrors");
 
 const register = async (req, res, next) => {
     /**
@@ -55,8 +56,31 @@ const getMe = async (req, res, next) => {
     }
 }
 
+const forgetPassword = async (req, res, next) => {
+    const { email } = req.body;
+    try {
+        await authService.forgetPassword(email);
+        return res.status(203).send();
+    } catch (err) {
+        next(err);
+    }
+}
+
+const resetPassword = async (req, res, next) => {
+    const { password } = req.body;
+    const { token, userId } = req.params;
+    try {
+        await authService.resetPassword(userId, token, password);
+        return res.status(203).send();
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     register,
     login,
     getMe,
+    forgetPassword,
+    resetPassword,
 };

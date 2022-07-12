@@ -1,10 +1,11 @@
-const { AuthenticationError, NotFoundError} = require('../errors/apiErrors');
+const { AuthenticationError, NotFoundError, BadRequestError, NotAcceptableError} = require('../errors/apiErrors');
 const userService = require('./user');
 const profileService = require('./profile');
-const { UserResponse, ProfileResponse} = require('../models/view-models')
+const sendEmail = require('../email/send-email');
+const EmailMessage = require('../email/EmailMessage');
 const jwt = require('jsonwebtoken');
 const { generateHash, compareHashedString } = require('../utils/hashing');
-const {user} = require("./index");
+const generateToken = require('../utils/generate-token');
 
 const register = async ({
     nid,
@@ -61,8 +62,42 @@ const getMe = async (userId) => {
     return { user, profile };
 }
 
+const forgetPassword = async (email) => {
+    // 1: get the user
+    const user = await userService.findByProperty('email', email);
+    if (!user) throw new NotFoundError('User not found');
+    const token = generateToken(8);
+    // 2: saving the token in database
+    user.passwordResetToken = await generateHash(token);
+    user.save();
+    // 3: send email
+    const emailMessage = new EmailMessage(
+        user.email,
+        'Resetting the password',
+        `Visit http://localhost:8080/reset-password/${user._id}/${token}`);
+    return sendEmail(emailMessage);
+}
+
+const resetPassword = async (userId, token, password) => {
+    // 1: get the user
+    const user = await userService.findByProperty('id', userId);
+    if (!user) throw new NotFoundError('User not found');
+    // 2: matching the token
+    if (!user.passwordResetToken) throw new NotAcceptableError('There are no request for resetting password')
+    const isMatched = await compareHashedString(token, user.passwordResetToken);
+    if (!isMatched) throw new BadRequestError('Password reset token is not matching');
+    // 3: save new password
+    user.password = await generateHash(password);
+    // 4: remove the token from the database
+    user.passwordResetToken = null;
+    // 5: saving the user
+    return user.save();
+}
+
 module.exports = {
     register,
     login,
     getMe,
+    forgetPassword,
+    resetPassword,
 };
