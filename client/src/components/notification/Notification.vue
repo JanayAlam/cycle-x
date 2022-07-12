@@ -1,8 +1,8 @@
 <template>
-    <div title="click to close" @click="handleClick" class="alert mb-1 d-flex align-items-center justify-content-center"
+    <div title="click to close" @click="handleClick" class="alert d-flex align-items-center justify-content-center"
         :class="typeClass" role="alert">
         <div class="icon me-2">
-            <font-awesome-icon icon="fa-solid fa-info" class="icon" />
+            <font-awesome-icon :icon="getIcon" class="icon" />
         </div>
         <div class="msg mb-0 align-self-center">{{ notification.msg }}</div>
     </div>
@@ -33,7 +33,19 @@ export default {
                 return 'alert-primary'
             }
             return `alert-${this.notification.type}`
-        }
+        },
+        getIcon() {
+            switch (this.notification.type) {
+                case 'success':
+                    return 'fa-solid fa-circle-check';
+                case 'danger':
+                    return 'fa-solid fa-circle-xmark';
+                case 'warning':
+                    return 'fa-solid fa-triangle-exclamation';
+                default:
+                    return 'fa-solid fa-circle-info';
+            }
+        },
     },
     methods: {
         ...mapActions(['popNotification']),
@@ -59,6 +71,7 @@ export default {
     border: 0;
     cursor: pointer;
     min-width: 350px;
+    margin-bottom: 5px;
 }
 
 .alert-primary {

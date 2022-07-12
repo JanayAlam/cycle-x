@@ -1,5 +1,5 @@
 <template>
-    <div class="notification-list bottom-0 start-50 translate-middle-x">
+    <div class="notification-list top-0 start-50 translate-middle-x">
         <notification v-for="notification in getNotifications" :key="notification.id" :notification="notification" />
     </div>
 </template>
@@ -19,5 +19,6 @@ export default {
 <style scoped>
 .notification-list {
     position: fixed;
+    margin-top: 10px;
 }
 </style>

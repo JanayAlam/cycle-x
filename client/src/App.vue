@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar />
+    <navbar class="mb-1" />
     <router-view />
     <notification-list />
   </div>
