@@ -54,7 +54,10 @@ export default {
         async submitHandler() {
             this.state.data.isLoading = true;
             this.v$.$validate();
-            if (this.v$.$error) return;
+            if (this.v$.$error) {
+                this.state.data.isLoading = false;
+                return;
+            };
             try {
                 await this.$store.dispatch('login', {
                     email: this.state.data.email,

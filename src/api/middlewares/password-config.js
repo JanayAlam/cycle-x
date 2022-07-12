@@ -19,7 +19,7 @@ module.exports = () => {
     // configuring the passport js.
     passport.use(new JwtStrategy(JWTOptions, function (JWTPayload, done) {
         // finding the user from the database
-        userService.findByProperty(JWTPayload.userId)
+        userService.findByProperty('id', JWTPayload.userId)
             .then(user => done(null, user))
             .catch(err => done(err, false));
     }));
