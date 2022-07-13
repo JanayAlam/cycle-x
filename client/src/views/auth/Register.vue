@@ -50,7 +50,7 @@ export default {
                 email: { required, email },
                 dob: { required },
                 password: { required, minLength: minLength(4) },
-                confirmPassword: { required, sameAs: sameAs(state.value.data.password) }
+                confirmPassword: { required, sameAs: sameAs(state.value.data.password) },
             }
         });
         const v$ = useVuelidate(rules, state.value.data);

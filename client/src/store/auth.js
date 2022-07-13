@@ -69,8 +69,7 @@ export default {
             commit('SET_USER', null);
             commit('SET_PROFILE', null);
         },
-        forgetPassword: async ({ commit }, email) => {
-            if (!email) throw new Error('Email address not provided');
+        forgetPassword: async (_context, email) => {
             try {
                 await axios.post('/auth/forget-password', { email });
             } catch (error) {
@@ -79,6 +78,22 @@ export default {
                 }
                 throw error;
             }
-        }
+        },
+        resetPassword: async (_context, payload) => {
+            try {
+                await axios.post(
+                    `/auth/reset-password/${payload.userId}/${payload.token}`,
+                    {
+                        password: payload.password,
+                        confirmPassword: payload.confirmPassword,
+                    }
+                );
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
+        },
     },
 };

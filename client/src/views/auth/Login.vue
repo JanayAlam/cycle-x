@@ -79,7 +79,7 @@ export default {
                 emailField: { required, email },
             }
         })
-        const v2$ = useVuelidate(forgetPasswordRules, state)
+        const v2$ = useVuelidate(forgetPasswordRules, state);
 
         return { v$, state, v2$ };
     },
@@ -94,8 +94,8 @@ export default {
             };
             try {
                 await this.$store.dispatch('login', {
-                    email: this.state.email,
-                    password: this.state.password,
+                    email: this.state.data.email,
+                    password: this.state.data.password,
                 });
                 this.pushNotification({ type: 'success', msg: 'Successfully logged in.' });
                 this.state.isLoading = false;
@@ -118,7 +118,10 @@ export default {
             }
             try {
                 await this.forgetPassword(this.state.emailField);
-                this.pushNotification({ type: 'success', msg: 'An email has been sent to your email address. Please check it.' });
+                this.pushNotification({
+                    type: 'success',
+                    msg: 'An email has been sent to your email address. Please check it.'
+                });
                 this.state.emailField = '';
                 this.state.isModalBtnLoading = false;
                 this.modalToggler();

@@ -1,5 +1,6 @@
 import store from '@/store';
 import Login from '@/views/auth/Login.vue';
+import ResetPassword from '@/views/auth/ResetPassword.vue';
 import Register from '@/views/auth/Register.vue';
 import PageNotFound from '@/views/errors/PageNotFound';
 import Home from '@/views/Home.vue';
@@ -26,6 +27,17 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next(from);
+            }
+            next();
+        },
+    },
+    {
+        path: '/reset-password/:userId/:token',
+        name: 'reset-password',
+        component: ResetPassword,
         beforeEnter: (to, from, next) => {
             if (store.getters['isAuthenticated']) {
                 return next(from);
