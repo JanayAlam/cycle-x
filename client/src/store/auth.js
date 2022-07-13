@@ -68,6 +68,17 @@ export default {
             commit('SET_TOKEN', null);
             commit('SET_USER', null);
             commit('SET_PROFILE', null);
+        },
+        forgetPassword: async ({ commit }, email) => {
+            if (!email) throw new Error('Email address not provided');
+            try {
+                await axios.post('/auth/forget-password', { email });
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
         }
     },
 };

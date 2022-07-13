@@ -12,9 +12,20 @@
             <form @submit.prevent="submitForgetPasswordHandler">
                 <div class="mb-2">
                     <label for="emailField" class="form-label mb-1">Email address</label>
-                    <input type="email" class="form-control" id="emailField" placeholder="Your email address">
+                    <input v-model="state.emailField" type="email" class="form-control" id="emailField"
+                        placeholder="Your email address" :class="{ 'is-invalid': v2$.emailField.$error }" />
+                    <div class="invalid-feedback" v-if="v2$.emailField.$error">
+                        <div v-for="error in v2$.emailField.$errors" :key="error.$message">
+                            {{ error.$message }}
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-sm btn-primary">
+                <button v-if="state.isModalBtnLoading" class="btn btn-sm btn-primary" disabled type="submit">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> Sending...
+                </button>
+                <button v-else class="btn btn-sm btn-primary" type="submit">
                     <font-awesome-icon icon="fa-solid fa-paper-plane" /> Send Email
                 </button>
             </form>
@@ -50,6 +61,8 @@ export default {
                 isLoading: false,
             },
             modalActive: false,
+            isModalBtnLoading: false,
+            emailField: '',
         });
 
         // validations
@@ -61,10 +74,17 @@ export default {
         });
         const v$ = useVuelidate(rules, state.data);
 
-        return { v$, state };
+        const forgetPasswordRules = computed(() => {
+            return {
+                emailField: { required, email },
+            }
+        })
+        const v2$ = useVuelidate(forgetPasswordRules, state)
+
+        return { v$, state, v2$ };
     },
     methods: {
-        ...mapActions(['pushNotification']),
+        ...mapActions(['pushNotification', 'forgetPassword']),
         async submitHandler() {
             this.state.isLoading = true;
             this.v$.$validate();
@@ -89,8 +109,24 @@ export default {
         modalToggler() {
             this.state.modalActive = !this.state.modalActive;
         },
-        submitForgetPasswordHandler() {
-            console.log('Clicked');
+        async submitForgetPasswordHandler() {
+            this.state.isModalBtnLoading = true;
+            this.v2$.$validate();
+            if (this.v2$.$error) {
+                this.state.isModalBtnLoading = false;
+                return;
+            }
+            try {
+                await this.forgetPassword(this.state.emailField);
+                this.pushNotification({ type: 'success', msg: 'An email has been sent to your email address. Please check it.' });
+                this.state.emailField = '';
+                this.state.isModalBtnLoading = false;
+                this.modalToggler();
+            } catch (e) {
+                this.pushNotification({ type: 'danger', msg: e.message });
+                this.state.emailField = '';
+                this.state.isModalBtnLoading = false;
+            }
         }
     }
 }
