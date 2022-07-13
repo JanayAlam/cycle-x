@@ -4,10 +4,25 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "make:component": "vue-cli-service make:component",
+    "make:directive": "vue-cli-service make:directive",
+    "make:layout": "vue-cli-service make:layout",
+    "make:mixin": "vue-cli-service make:mixin",
+    "make:view": "vue-cli-service make:view"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-brands-svg-icons": "^6.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
+    "@vuelidate/core": "^2.0.0-alpha.42",
+    "@vuelidate/validators": "^2.0.0-alpha.30",
+    "at-ui-style": "^1.5.1",
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "font-awesome-animation": "^1.1.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
@@ -17,6 +32,5 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0"
-  },
-  "proxy": "http://localhost:5000"
+  }
 }

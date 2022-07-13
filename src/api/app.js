@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const routes = require('./routers');
 const errorHandler = require('./errors');
+require('./middlewares').passportConfig();
 
 // some needed middlewares
 app.use(express.json());

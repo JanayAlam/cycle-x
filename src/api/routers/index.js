@@ -3,6 +3,14 @@ const routes = [
         path: '/auth',
         router: require('./auth'),
     },
+    {
+        path: '/users',
+        router: require('./user'),
+    },
+    {
+        path: '/profiles',
+        router: require('./profile'),
+    },
 ];
 
 module.exports = (app) => {

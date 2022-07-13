@@ -5,7 +5,7 @@ const userSchema = new Schema(
         nid: {
             type: String,
             trim: true,
-            maxlength: 10,
+            maxlength: 11,
             minlength: 4,
             required: true,
         },
@@ -34,6 +34,11 @@ const userSchema = new Schema(
             type: Boolean,
             required: true,
             default: false,
+        },
+        passwordResetToken: {
+            type: String,
+            trim: true,
+            default: null,
         },
         password: {
             type: String,

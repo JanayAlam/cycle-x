@@ -1,25 +1,61 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import store from '@/store';
+import Login from '@/views/auth/Login.vue';
+import ResetPassword from '@/views/auth/ResetPassword.vue';
+import Register from '@/views/auth/Register.vue';
+import PageNotFound from '@/views/errors/PageNotFound';
+import Home from '@/views/Home.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    {
+        path: '/',
+        name: 'home',
+        component: Home,
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next(from);
+            }
+            next();
+        },
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next(from);
+            }
+            next();
+        },
+    },
+    {
+        path: '/reset-password/:userId/:token',
+        name: 'reset-password',
+        component: ResetPassword,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next(from);
+            }
+            next();
+        },
+    },
+    {
+        path: '/:catchAll(.*)*',
+        name: 'PageNotFound',
+        component: PageNotFound,
+    },
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+});
 
-export default router
+export default router;
+
