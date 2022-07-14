@@ -7,7 +7,6 @@
                 </div>
             </div>
         </div>
-        <!-- <modal /> -->
         <modal header="Forget Password" :toggler="modalToggler" :modalActive="state.modalActive">
             <form @submit.prevent="submitForgetPasswordHandler">
                 <div class="mb-2">
@@ -52,7 +51,7 @@ export default {
         const store = useStore();
         document.title = 'Login';
 
-        store.dispatch('activeAuthButton', 'login')
+        store.dispatch('activeAuthButton', 'login');
 
         const state = reactive({
             data: {
@@ -86,24 +85,24 @@ export default {
     methods: {
         ...mapActions(['pushNotification', 'forgetPassword']),
         async submitHandler() {
-            this.state.isLoading = true;
+            this.state.data.isLoading = true;
             this.v$.$validate();
             if (this.v$.$error) {
-                this.state.isLoading = false;
+                this.state.data.isLoading = false;
                 return;
-            };
+            }
             try {
                 await this.$store.dispatch('login', {
                     email: this.state.data.email,
                     password: this.state.data.password,
                 });
                 this.pushNotification({ type: 'success', msg: 'Successfully logged in.' });
-                this.state.isLoading = false;
+                this.state.data.isLoading= false;
                 this.$router.replace({ name: 'home' });
             } catch (e) {
                 this.pushNotification({ type: 'danger', msg: e.message })
                 this.state.password = '';
-                this.state.isLoading = false;
+                this.state.data.isLoading = false;
             }
         },
         modalToggler() {

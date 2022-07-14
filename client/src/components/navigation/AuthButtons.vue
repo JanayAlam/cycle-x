@@ -1,9 +1,9 @@
 <template>
     <div class="d-flex g-2 b-group">
-        <router-link :to="{ name: 'login' }" class="primary-clr"
+        <router-link :to="{ name: 'login' }" class="dark-white"
             :class="{ 'active': getAuthButtonActive.includes('login') }">Login
         </router-link>
-        <router-link :to="{ name: 'register' }" class="ms-3 primary-clr register"
+        <router-link :to="{ name: 'register' }" class="ms-3 dark-white"
             :class="{ 'active': getAuthButtonActive.includes('register') }">Register</router-link>
     </div>
 </template>
