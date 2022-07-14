@@ -3,7 +3,7 @@
 
 
 node_modules/
-./public/profile-photos
+public/profile-photos/
 .idea
 
 ### VisualStudioCode ###
