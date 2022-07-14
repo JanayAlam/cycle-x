@@ -16,10 +16,6 @@ const profileSchema = new Schema(
             maxlength: 15,
             minlength: 3,
         },
-        bio: {
-            type: String,
-            maxlength: 150,
-        },
         profilePhoto: {
             type: String,
             required: true,

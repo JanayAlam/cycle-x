@@ -1,9 +1,11 @@
 const router = require('express').Router();
-const {reqValidator} = require('../middlewares');
-const {registrationReqModel: register,
+const { reqValidator } = require('../middlewares');
+const {
+    registrationReqModel: register,
     loginReqModel: login,
     forgetPasswordReqModel: forgetPass,
-    resetPasswordReqModel: resetPass} = require('../models/req-models');
+    resetPasswordReqModel: resetPass
+} = require('../models/req-models');
 const authController = require('../controllers/auth');
 const passport = require('passport');
 

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { BadRequestError, NotFoundError, InternalServerError} = require('../errors/apiErrors');
+const { BadRequestError, NotFoundError } = require('../errors/apiErrors');
 const Profile = require('../models/data-models/Profile');
 
 const _unlinkProfilePhoto = (img) => {
@@ -26,7 +26,6 @@ const create = async ({
     lastName,
     profilePhoto,
     userId,
-    bio,
     dob,
     rank,
     mute,
@@ -39,8 +38,7 @@ const create = async ({
     profile = new Profile({
         firstName,
         lastName,
-        profilePhoto, // TODO: default string value
-        bio,
+        profilePhoto: profilePhoto || '/default/default.png',
         dob,
         user: userId,
         rank,
@@ -49,10 +47,29 @@ const create = async ({
     return profile.save();
 };
 
+const update = async (userId, { firstName, lastName, dob, rank, mute, }) => {
+    // 1: get the profile
+    const profile = await findByProperty('user', userId);
+    if (!profile) throw new NotFoundError('Profile not found');
+    // 2: update the profile with new value
+    profile.firstName = firstName ? firstName : profile.firstName;
+    profile.lastName = lastName ? lastName : profile.lastName;
+    profile.dob = dob ? dob : profile.dob;
+    profile.rank = rank ? rank : profile.rank;
+    profile.mute = mute ? mute : profile.mute;
+    // 3: save the profile and return
+    return profile.save();
+};
+
+const getAllProfile = () => {
+    // 1: get all the profiles and return
+    return Profile.find();
+};
+
 const changeProfilePhoto = async (userId, filename) => {
     // 1: get the profile
     const profile = await findByProperty('user', userId);
-    if (!profile) throw NotFoundError('Profile not found');
+    if (!profile) throw new NotFoundError('Profile not found');
     // 2: unlink the old photo
     const oldPhoto = profile.profilePhoto;
     const isError = _unlinkProfilePhoto(oldPhoto);
@@ -62,8 +79,27 @@ const changeProfilePhoto = async (userId, filename) => {
     return profile.save();
 };
 
+const deleteProfilePhoto = async (userId) => {
+    // 1: get the profile
+    const profile = await findByProperty('user', userId);
+    if (!profile) throw new NotFoundError('Profile not found');
+    // 2: check the profile photo if it is set to default or not
+    if (profile.profilePhoto === '/default/default.png')
+        throw new BadRequestError('The default profile photo cannot be deleted');
+    // 3: unlink the photo if it is not set to default
+    const photo = profile.profilePhoto;
+    const isError = _unlinkProfilePhoto(photo);
+    if (isError) throw isError;
+    // 4: update return the new profile data
+    profile.profilePhoto = '/default/default.png';
+    return profile.save();
+};
+
 module.exports = {
     findByProperty,
     create,
+    update,
+    getAllProfile,
     changeProfilePhoto,
+    deleteProfilePhoto,
 };
