@@ -18,6 +18,14 @@ body {
     color: #072a53 !important;
 }
 
+.bg-primary-clr {
+    background: #072a53 !important;
+}
+
+.dark-white {
+    color: #eeeeee !important;
+}
+
 .bg-dark-white {
     background-color: #eeeeee !important;
 }

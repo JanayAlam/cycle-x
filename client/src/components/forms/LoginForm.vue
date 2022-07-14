@@ -32,12 +32,12 @@
                     <span @click="toggler" class="primary-clr modal-link">Forget password</span>
                 </div>
             </div>
-            <button v-if="!data.isLoading" type="submit" class="btn btn-primary mb-2">
-                <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" /> Login
-            </button>
-            <button v-else class="btn btn-primary mb-2" type="button" disabled>
+            <button v-if="data.isLoading" class="btn btn-primary mb-2" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Processing...
+            </button>
+            <button v-else type="submit" class="btn btn-primary mb-2">
+                <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" /> Login
             </button>
             <div>
                 <router-link class="primary-clr" :to="{ name: 'register' }">

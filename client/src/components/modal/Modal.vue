@@ -4,7 +4,7 @@
             <div class="card card-body c-card c-modal">
                 <div class="d-flex header">
                     <h1 class="header me-auto">{{ header || 'Modal' }}</h1>
-                    <button @click.prevent="toggler" class="btn btn-sm btn-light text-danger">
+                    <button @click.prevent="toggler" class="btn btn-sm btn-light text-danger fw-bold">
                         Close
                     </button>
                 </div>

@@ -22,6 +22,8 @@ const profileSchema = new Schema(
         },
         profilePhoto: {
             type: String,
+            required: true,
+            default: '/default/default.png'
         },
         dob: {
             type: Date,
