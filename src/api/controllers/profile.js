@@ -1,5 +1,5 @@
 const { profile: profileService } = require('../services');
-const { BadRequestError, NotFoundError} = require("../errors/apiErrors");
+const { BadRequestError, NotFoundError } = require("../errors/apiErrors");
 const { ProfileResponse } = require("../models/view-models");
 
 const get = async (req, res, next) => {
@@ -36,7 +36,7 @@ const changeProfileDetails = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
 
 const changeProfilePhoto = async (req, res, next) => {
     const { _id } = req.user;

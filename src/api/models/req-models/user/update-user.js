@@ -1,13 +1,20 @@
 const Joi = require('joi');
 
 const schema = Joi.object({
-    firstName: Joi.string().min(3).max(15),
-    lastName: Joi.string().min(3).max(15),
-    dob: Joi.date().raw(),
+    nid: Joi.string().min(4).max(11),
+    email: Joi.string()
+        .email({
+            minDomainSegments: 2,
+            tlds: {
+                allow: ['com', 'org', 'net'],
+            },
+        })
+        .min(5)
+        .max(150),
 });
 
 /**
- * profile schema validator
+ * user schema validator
  * @param {Object} data the object which client sent
  * @returns {Object} the result object validated by joi
  */

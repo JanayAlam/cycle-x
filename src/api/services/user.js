@@ -1,5 +1,5 @@
 const User = require('../models/data-models/User');
-const { BadRequestError, ApiError} = require('../errors/apiErrors');
+const { BadRequestError } = require('../errors/apiErrors');
 
 const findByProperty = async (key, value) => {
     if (key === 'id') {
@@ -32,36 +32,39 @@ const create = async ({ nid, email, password, roles, isEmailVerified }) => {
     return user.save();
 };
 
-const update = async (id, data) => {
-    let user = await findByProperty('id', id);
+const update = async (id, { nid, email, isEmailVerified }) => {
+    const user = await findByProperty('id', id);
     if (!user) {
         throw new BadRequestError('No user found with the provided id');
     }
 
-    if (data.email) {
-        user = await findByProperty('email', data.email);
-        if (user) {
+    if (email) {
+        const isEmailValid = await findByProperty('email', email);
+        if (isEmailValid) {
             throw new BadRequestError('Email is already in use');
         }
     }
 
-    if (data.nid) {
-        user = await findByProperty('nid', data.nid);
-        if (user) {
+    if (nid) {
+        const isNidValid = await findByProperty('nid', nid);
+        if (isNidValid) {
             throw new BadRequestError(
                 'National identity card is already in use'
             );
         }
     }
-
-    user.nid = data.nid ? data.nid : user.nid;
-    user.email = data.email ? data.email : user.email;
-    user.isEmailVerified = data.isEmailVerified
-        ? data.isEmailVerified
+    user.nid = nid ? nid : user.nid;
+    user.email = email ? email : user.email;
+    user.isEmailVerified = isEmailVerified
+        ? isEmailVerified
         : user.isEmailVerified;
-    user.roles = data.roles ? data.roles : user.roles;
 
     return user.save();
+};
+
+const getAllUser = () => {
+    // 1: get all the users and return
+    return User.find();
 };
 
 const updatePassword = async (id, password) => {
@@ -76,5 +79,6 @@ module.exports = {
     findByProperty,
     create,
     update,
+    getAllUser,
     updatePassword,
 };

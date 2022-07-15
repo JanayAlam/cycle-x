@@ -34,9 +34,9 @@ const schema = Joi.object({
 });
 
 /**
- * registration user schema validator.
- * @param {Object} data the object which client sent.
- * @returns {Object} the result object validated by joi.
+ * registration user schema validator
+ * @param {Object} data the object which client sent
+ * @returns {Object} the result object validated by joi
  */
 module.exports = (data) => {
     const result = schema.validate(data);

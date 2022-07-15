@@ -15,9 +15,9 @@ const schema = Joi.object({
 });
 
 /**
- * login user schema validator.
- * @param {Object} data The object which client sent.
- * @returns {Object} The result object validated by joi.
+ * reset password schema validator
+ * @param {Object} data The object which client sent
+ * @returns {Object} The result object validated by joi
  */
 module.exports = (data) => {
     const result = schema.validate(data);
