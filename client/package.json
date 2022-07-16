@@ -22,6 +22,7 @@
     "at-ui-style": "^1.5.1",
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "cropperjs": "^1.5.12",
     "font-awesome-animation": "^1.1.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",

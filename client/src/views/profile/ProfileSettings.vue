@@ -2,25 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="sidebar col-md-3 col-sm-4">
-                <SettingsSidebar active="profile-settings" />
+                <settings-sidebar active="profile-settings" />
             </div>
             <div class="col-md-9 col-sm-8">
-                <div v-if="isLoading">
-                    <div class="card" aria-hidden="true">
-                        <div class="card-body">
-                            <h5 class="card-title placeholder-glow">
-                                <span class="placeholder col-6"></span>
-                            </h5>
-                            <p class="card-text placeholder-glow">
-                                <span class="placeholder col-7"></span>
-                                <span class="placeholder col-4"></span>
-                                <span class="placeholder col-4"></span>
-                                <span class="placeholder col-6"></span>
-                                <span class="placeholder col-8"></span>
-                            </p>
-                            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder placeholder-glow col-6"></a>
-                        </div>
-                    </div>
+                <div class="card card-body c-card" aria-hidden="true">
+                    <profile-details-form :profile="profile" :submitHandler="submitHandler" />
                 </div>
             </div>
         </div>
@@ -28,19 +14,35 @@
 </template>
 
 <script>
+import ProfileDetailsForm from '@/components/forms/profile-settings/ProfileDetailsForm.vue';
 import SettingsSidebar from '@/components/sidebars/SettingsSidebar.vue';
-import { reactive } from 'vue';
+import { computed } from '@vue/reactivity';
+import { useStore } from 'vuex';
 
 export default {
     name: 'ProfileSettings',
-    components: { SettingsSidebar },
+    components: { SettingsSidebar, ProfileDetailsForm },
     setup() {
         document.title = 'Settings';
-        const state = reactive({
-            isLoading: true,
-        });
+        const store = useStore();
 
-        return { ...state };
+        const profile = computed(() => store.getters.getProfile);
+
+        const submitHandler = async () => {
+            try {
+                await store.dispatch('changeProfileDetails', {
+                    firstName: profile.value.firstName,
+                    lastName: profile.value.lastName,
+                    dob: profile.value.dob,
+                });
+                store.dispatch('pushNotification', { type: 'success', msg: 'Profile details updated' });
+            } catch (e) {
+                store.dispatch('pushNotification', { type: 'danger', msg: e.message });
+            }
+
+        };
+
+        return { profile, submitHandler };
     },
 };
 </script>

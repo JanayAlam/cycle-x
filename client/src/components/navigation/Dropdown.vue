@@ -2,12 +2,12 @@
     <div class="nav-item dropdown">
         <button class="btn btn-sm dropdown-toggle d-flex justify-content-center align-items-center dark-white"
                 id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img :src="profilePhoto" alt="Profile Photo" class="rounded-circle me-1" height="25" width="25"/>
+            <img :src="profile.profilePhoto" alt="Profile Photo" class="rounded-circle me-1" height="25" width="25"/>
             <span>{{ profile.firstName }} {{ profile.lastName }}</span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-                <router-link class="dropdown-item" :to="{ name: 'home' }">Profile Settings</router-link>
+                <router-link class="dropdown-item" :to="{ name: 'profile-settings' }">Profile Settings</router-link>
             </li>
             <li>
                 <router-link class="dropdown-item" :to="{ name: 'home' }">Admin Dashboard</router-link>
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
+import { useStore } from 'vuex';
 
 export default {
     name: 'NavigationDropdown',
@@ -37,8 +37,7 @@ export default {
         const user = computed(() => {
             return store.getters.getUser
         });
-        const profilePhoto = `http://localhost:5000/static${profile.value.profilePhoto}`;
-        return { profile, user, profilePhoto }
+        return { profile, user }
     },
 }
 </script>

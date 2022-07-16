@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import auth from './auth';
+import profile from './profile';
 import ui from './ui';
 
 export default createStore({
@@ -35,6 +36,7 @@ export default createStore({
     modules: {
         auth,
         ui,
+        profile,
     },
 });
 
