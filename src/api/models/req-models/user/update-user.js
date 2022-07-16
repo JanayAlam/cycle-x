@@ -1,6 +1,7 @@
 const Joi = require('joi');
 
 const schema = Joi.object({
+    nid: Joi.string().min(4).max(11),
     email: Joi.string()
         .email({
             minDomainSegments: 2,
@@ -9,14 +10,13 @@ const schema = Joi.object({
             },
         })
         .min(5)
-        .max(150)
-        .required(),
+        .max(150),
 });
 
 /**
- * forget password schema validator
- * @param {Object} data The object which client sent
- * @returns {Object} The result object validated by joi
+ * user schema validator
+ * @param {Object} data the object which client sent
+ * @returns {Object} the result object validated by joi
  */
 module.exports = (data) => {
     const result = schema.validate(data);

@@ -1,9 +1,10 @@
 import store from '@/store';
 import Login from '@/views/auth/Login.vue';
-import ResetPassword from '@/views/auth/ResetPassword.vue';
 import Register from '@/views/auth/Register.vue';
+import ResetPassword from '@/views/auth/ResetPassword.vue';
 import PageNotFound from '@/views/errors/PageNotFound';
 import Home from '@/views/Home.vue';
+import ProfileSettings from "@/views/profile/ProfileSettings";
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -43,6 +44,17 @@ const routes = [
                 return next(from);
             }
             next();
+        },
+    },
+    {
+        path: '/profile-settings',
+        name: 'profile-settings',
+        component: ProfileSettings,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next();
+            }
+            next({ name: 'login' });
         },
     },
     {

@@ -3,4 +3,6 @@ module.exports = {
     loginReqModel: require('./auth/login-req-model'),
     forgetPasswordReqModel: require('./auth/forget-password-req-model'),
     resetPasswordReqModel: require('./auth/reset-password-req-model'),
+    profileReqModel: require('./profile/update-profile'),
+    userReqModel: require('./user/update-user'),
 };
