@@ -18,6 +18,14 @@ body {
     color: #072a53 !important;
 }
 
+.danger-clr {
+    color: #D63329 !important;
+}
+
+.success-clr {
+    color: #cc9e05 !important;
+}
+
 .bg-primary-clr {
     background: #072a53 !important;
 }

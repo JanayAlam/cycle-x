@@ -5,8 +5,8 @@
             <font-awesome-icon icon="fa-solid fa-user-gear" />
             <span class="ms-2">Profile Details</span>
         </router-link>
-        <router-link to="#" class="list-group-item list-group-item-action"
-            :class="{ 'active': active === 'verify-email' }">
+        <router-link :to="{ name: 'email-verify' }" class="list-group-item list-group-item-action"
+            :class="{ 'active': active === 'email-verify' }">
             <font-awesome-icon icon="fa-solid fa-user-check" />
             <span class="ms-2">Verify Email Address</span>
         </router-link>
