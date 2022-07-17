@@ -10,8 +10,8 @@
             <font-awesome-icon icon="fa-solid fa-user-check" />
             <span class="ms-2">Verify Email Address</span>
         </router-link>
-        <router-link to="#" class="list-group-item list-group-item-action"
-            :class="{ 'active': active === 'change-user' }">
+        <router-link :to="{ name: 'change-user-info' }" class="list-group-item list-group-item-action"
+            :class="{ 'active': active === 'change-user-info' }">
             <font-awesome-icon icon="fa-solid fa-at" />
             <span class="ms-2">Change Email or NID</span>
         </router-link>

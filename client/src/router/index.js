@@ -4,8 +4,9 @@ import Register from '@/views/auth/Register.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 import PageNotFound from '@/views/errors/PageNotFound.vue';
 import Home from '@/views/Home.vue';
-import ProfileSettings from '@/views/profile/ProfileSettings.vue';
+import ChangeUserInfo from '@/views/profile/ChangeUserInfo.vue';
 import EmailVerify from '@/views/profile/EmailVerify.vue';
+import ProfileSettings from '@/views/profile/ProfileSettings.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -62,6 +63,17 @@ const routes = [
         path: '/email-verify',
         name: 'email-verify',
         component: EmailVerify,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next();
+            }
+            next({ name: 'login' });
+        },
+    },
+    {
+        path: '/change-user-info',
+        name: 'change-user-info',
+        component: ChangeUserInfo,
         beforeEnter: (to, from, next) => {
             if (store.getters['isAuthenticated']) {
                 return next();

@@ -23,7 +23,7 @@ export default {
     name: 'ProfileSettings',
     components: { SettingsSidebar, ProfileDetailsForm },
     setup() {
-        document.title = 'Settings';
+        document.title = 'Update profile details';
         const store = useStore();
 
         const profile = computed(() => store.getters.getProfile);

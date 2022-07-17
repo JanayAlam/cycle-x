@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import SettingsSidebar from '@/components/sidebars/SettingsSidebar.vue';
 import VerifyEmailForm from '@/components/forms/profile-settings/VerifyEmailForm.vue';
-import { useStore } from 'vuex';
-import { reactive } from "vue";
+import SettingsSidebar from '@/components/sidebars/SettingsSidebar.vue';
 import { computed } from "@vue/reactivity";
+import { reactive } from "vue";
+import { useStore } from 'vuex';
 
 export default {
     name: 'EmailVerify',

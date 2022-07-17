@@ -1,38 +1,35 @@
 <template>
-    <div>
-        <form @submit.prevent="submitHandler" class="primary-clr">
-            <legend class="legend">Verify Email Address</legend>
-            <div class="display-email d-flex align-items-center primary-clr">
-                <font-awesome-icon icon="fa-solid fa-at" />
-                <span class="email primary-clr ms-2">{{ user.email }}</span>
-                <sup>
-                    <router-link to="#" class="primary-clr">edit</router-link>
-                </sup>
+    <form @submit.prevent="submitHandler">
+        <legend class="legend mb-5 primary-clr">
+            <font-awesome-icon icon="fa-solid fa-user-check" /> Verify Email Address
+        </legend>
+        <div class="display-email d-flex align-items-center">
+            <font-awesome-icon icon="fa-solid fa-envelope" />
+            <span class="email ms-2">{{ user.email }}</span>
+            <sup>
+                <router-link :to="{ name: 'change-user-info' }" class="primary-clr">edit</router-link>
+            </sup>
+        </div>
+        <div v-if="user.isEmailVerified">
+            <p class="emoji-text">Yeah! Already verified.</p>
+        </div>
+        <div v-else>
+            <div class="d-flex">
+                <input type="text" v-model="token" placeholder="Verification token" class="form-control" />
+                <button class="btn btn-primary px-4 ms-2 d-flex align-items-center">
+                    <span class="me-2">Verify</span>
+                    <font-awesome-icon icon="fa-solid fa-right-long" />
+                </button>
             </div>
-            <div v-if="!user.isEmailVerified">
-                <div class="d-flex justify-content-center mt-2">
-                    <font-awesome-icon icon="fa-solid fa-face-grin-beam" class="emoji primary-clr" />
+            <div v-if="isResentLoading" class="mt-2">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="emoji-text">Yeah! Already verified.</p>
+                Processing
             </div>
-            <div v-else>
-                <div class="d-flex">
-                    <input type="text" v-model="token" placeholder="Verification token" class="form-control" />
-                    <button class="btn btn-primary px-4 ms-2 d-flex align-items-center">
-                        <span class="me-2">Verify</span>
-                        <font-awesome-icon icon="fa-solid fa-right-long" />
-                    </button>
-                </div>
-                <div v-if="isResentLoading" class="primary-clr mt-2">
-                    <div class="spinner-border spinner-border-sm" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    Processing
-                </div>
-                <button v-else class="resent-btn primary-clr mt-2">Resent the verification token</button>
-            </div>
-        </form>
-    </div>
+            <button v-else class="resent-btn mt-2">Resent the verification token</button>
+        </div>
+    </form>
 </template>
 
 <script>
@@ -80,14 +77,8 @@ a:hover {
     text-decoration: underline;
 }
 
-.emoji {
-    font-size: 10rem;
-}
-
 .emoji-text {
-    margin: 15px 0;
-    font-size: 2rem;
-    text-align: center;
+    margin-top: 15px;
+    font-size: 1rem;
 }
-
 </style>
