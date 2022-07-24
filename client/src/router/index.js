@@ -5,6 +5,8 @@ import ResetPassword from '@/views/auth/ResetPassword.vue';
 import PageNotFound from '@/views/errors/PageNotFound';
 import Home from '@/views/Home.vue';
 import ProfileSettings from "@/views/profile/ProfileSettings";
+import Dashboard from "@/views/profile/Dashboard";
+import { faDashboard } from '@fortawesome/free-solid-svg-icons';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -61,6 +63,17 @@ const routes = [
         path: '/:catchAll(.*)*',
         name: 'PageNotFound',
         component: PageNotFound,
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next();
+            }
+            next();
+        },
     },
 ];
 

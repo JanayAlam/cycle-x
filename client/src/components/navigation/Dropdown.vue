@@ -10,7 +10,7 @@
                 <router-link class="dropdown-item" :to="{ name: 'profile-settings' }">Profile Settings</router-link>
             </li>
             <li>
-                <router-link class="dropdown-item" :to="{ name: 'home' }">Admin Dashboard</router-link>
+                <router-link class="dropdown-item" :to="{ name: 'dashboard' }">Admin Dashboard</router-link>
             </li>
             <li>
                 <hr class="dropdown-divider">

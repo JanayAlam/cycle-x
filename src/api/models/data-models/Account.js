@@ -13,6 +13,21 @@ const accountSchema = new Schema(
             ref: 'Profile',
             required: true,
         },
+        bkashLogo: {
+            type: String,
+            required: true,
+            default: '/default/bkash-logo.png'
+        },
+        nagadLogo: {
+            type: String,
+            required: true,
+            default: '/default/nagad-logo.png'
+        },
+        rocketLogo: {
+            type: String,
+            required: true,
+            default: '/default/rocket-logo.png'
+        },
     },
     { timestamps: true }
 );
