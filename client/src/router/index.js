@@ -4,10 +4,13 @@ import Register from '@/views/auth/Register.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 import PageNotFound from '@/views/errors/PageNotFound.vue';
 import Home from '@/views/Home.vue';
+import Dashboard from "@/views/profile/Dashboard";
+import { faDashboard } from '@fortawesome/free-solid-svg-icons';
 import ChangePassword from '@/views/profile/ChangePassword.vue';
 import ChangeUserInfo from '@/views/profile/ChangeUserInfo.vue';
 import EmailVerify from '@/views/profile/EmailVerify.vue';
 import ProfileSettings from '@/views/profile/ProfileSettings.vue';
+
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -97,6 +100,17 @@ const routes = [
         path: '/:catchAll(.*)*',
         name: 'PageNotFound',
         component: PageNotFound,
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next();
+            }
+            next();
+        },
     },
 ];
 
