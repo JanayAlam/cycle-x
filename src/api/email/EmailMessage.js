@@ -8,7 +8,7 @@ class EmailMessage {
      */
     constructor(to, subject, bodyText, html=null) {
         this.to = to;
-        this.from = process.env.MAIL_ADDRESS;
+        this.from = process.env.MAIL_ADDRESS || 'admin@cyclex.com';
         this.subject = subject;
         this.bodyText = bodyText;
         this.html = html;

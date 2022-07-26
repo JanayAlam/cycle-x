@@ -1,6 +1,8 @@
 <template>
     <div>
-        <h1 class="legend primary-clr">Profile Details</h1>
+        <h1 class="legend mb-5">
+            <font-awesome-icon icon="fa-solid fa-user-gear" /> Profile Details
+        </h1>
         <div class="row">
             <div class="col">
                 <form @submit.prevent="submitHandler">
@@ -17,7 +19,7 @@
                         <input type="date" id="dob" class="form-control" placeholder="yyyy-MM-dd"
                             v-model="profile.dob" />
                     </div>
-                    <button class="btn btn-sm px-3 btn-primary">
+                    <button class="btn btn-sm px-3 btn-dark">
                         <font-awesome-icon icon="fa-solid fa-floppy-disk" />
                         <span class="ms-2">Save Profile</span>
                     </button>
@@ -27,8 +29,8 @@
                 <div class="d-flex-row justify-content-center align-items-center">
                     <div>
                         <div class="d-flex justify-content-center mb-2">
-                            <img class="rounded-circle" :src="profile.profilePhoto" alt="Profile Photo"
-                            height="200" width="200" />
+                            <img class="rounded-circle" :src="profile.profilePhoto" alt="Profile Photo" height="200"
+                                width="200" />
                         </div>
                         <input type="file" class="form-control" />
                     </div>

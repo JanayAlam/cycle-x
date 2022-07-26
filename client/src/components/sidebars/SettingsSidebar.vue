@@ -5,17 +5,17 @@
             <font-awesome-icon icon="fa-solid fa-user-gear" />
             <span class="ms-2">Profile Details</span>
         </router-link>
-        <router-link to="#" class="list-group-item list-group-item-action"
-            :class="{ 'active': active === 'verify-email' }">
+        <router-link :to="{ name: 'email-verify' }" class="list-group-item list-group-item-action"
+            :class="{ 'active': active === 'email-verify' }">
             <font-awesome-icon icon="fa-solid fa-user-check" />
             <span class="ms-2">Verify Email Address</span>
         </router-link>
-        <router-link to="#" class="list-group-item list-group-item-action"
-            :class="{ 'active': active === 'change-user' }">
+        <router-link :to="{ name: 'change-user-info' }" class="list-group-item list-group-item-action"
+            :class="{ 'active': active === 'change-user-info' }">
             <font-awesome-icon icon="fa-solid fa-at" />
             <span class="ms-2">Change Email or NID</span>
         </router-link>
-        <router-link to="#" class="list-group-item list-group-item-action"
+        <router-link :to="{ name: 'change-password' }" class="list-group-item list-group-item-action"
             :class="{ 'active': active === 'change-password' }">
             <font-awesome-icon icon="fa-solid fa-key" />
             <span class="ms-2">Change Password</span>
@@ -29,10 +29,6 @@ export default {
     props: {
         active: String,
     },
-    setup(_props) {
-
-        return {};
-    },
 }
 </script>
 
@@ -41,7 +37,6 @@ export default {
     font-size: 0.95rem;
     padding-top: 15px;
     padding-bottom: 15px;
-    /* text-align: center; */
     border: 0;
     background-color: transparent;
     font-weight: bold;
@@ -50,8 +45,10 @@ export default {
 
 .active,
 .list-group-item:hover {
-    background-color: #dff1fc;
-    color: #072A53;
+    /* background-color: #dff1fc;
+    color: #072A53; */
+    background-color: #8df58d46;
+    color: #09441c;
 }
 
 .list-group-item:hover {

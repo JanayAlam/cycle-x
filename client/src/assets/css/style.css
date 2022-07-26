@@ -18,6 +18,18 @@ body {
     color: #072a53 !important;
 }
 
+.danger-clr {
+    color: #D63329 !important;
+}
+
+.warning-clr {
+    color: #cc9e05 !important;
+}
+
+.success-clr {
+    color: #8df58d !important;
+}
+
 .bg-primary-clr {
     background: #072a53 !important;
 }
@@ -43,7 +55,7 @@ body {
 }
 
 .legend {
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 25px;
     font-family: 'Albert Sans', sans-serif;

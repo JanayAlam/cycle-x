@@ -38,14 +38,15 @@ const update = async (id, { nid, email, isEmailVerified }) => {
         throw new BadRequestError('No user found with the provided id');
     }
 
-    if (email) {
+    if (email && email !== user.email) {
         const isEmailValid = await findByProperty('email', email);
         if (isEmailValid) {
             throw new BadRequestError('Email is already in use');
         }
+        isEmailVerified = false;
     }
 
-    if (nid) {
+    if (nid && nid !== user.nid) {
         const isNidValid = await findByProperty('nid', nid);
         if (isNidValid) {
             throw new BadRequestError(
