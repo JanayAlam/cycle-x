@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="submitHandler">
-        <legend class="legend mb-5 primary-clr">
+        <legend class="legend mb-5">
             <font-awesome-icon icon="fa-solid fa-at" /> Update User Information
         </legend>
         <div class="row">
@@ -19,7 +19,7 @@
                 <input type="text" placeholder="New national identity card number" class="form-control" />
             </div>
         </div>
-        <button class="btn btn-sm px-3 mt-2 btn-primary">
+        <button class="btn btn-sm px-3 mt-2 btn-dark">
             <font-awesome-icon icon="fa-solid fa-floppy-disk" />
             <span class="ms-2">Save User</span>
         </button>

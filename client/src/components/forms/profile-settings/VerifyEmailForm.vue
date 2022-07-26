@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="submitHandler">
-        <legend class="legend mb-5 primary-clr">
+        <legend class="legend mb-5">
             <font-awesome-icon icon="fa-solid fa-user-check" /> Verify Email Address
         </legend>
         <div class="display-email d-flex align-items-center">
@@ -16,7 +16,7 @@
         <div v-else>
             <div class="d-flex">
                 <input type="text" v-model="token" placeholder="Verification token" class="form-control" />
-                <button class="btn btn-primary px-4 ms-2 d-flex align-items-center">
+                <button class="btn btn-dark px-4 ms-2 d-flex align-items-center">
                     <span class="me-2">Verify</span>
                     <font-awesome-icon icon="fa-solid fa-right-long" />
                 </button>

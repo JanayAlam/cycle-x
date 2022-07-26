@@ -22,8 +22,12 @@ body {
     color: #D63329 !important;
 }
 
-.success-clr {
+.warning-clr {
     color: #cc9e05 !important;
+}
+
+.success-clr {
+    color: #8df58d !important;
 }
 
 .bg-primary-clr {

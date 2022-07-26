@@ -4,6 +4,7 @@ import Register from '@/views/auth/Register.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 import PageNotFound from '@/views/errors/PageNotFound.vue';
 import Home from '@/views/Home.vue';
+import ChangePassword from '@/views/profile/ChangePassword.vue';
 import ChangeUserInfo from '@/views/profile/ChangeUserInfo.vue';
 import EmailVerify from '@/views/profile/EmailVerify.vue';
 import ProfileSettings from '@/views/profile/ProfileSettings.vue';
@@ -82,6 +83,17 @@ const routes = [
         },
     },
     {
+        path: '/change-password',
+        name: 'change-password',
+        component: ChangePassword,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['isAuthenticated']) {
+                return next();
+            }
+            next({ name: 'login' });
+        },
+    },
+    {
         path: '/:catchAll(.*)*',
         name: 'PageNotFound',
         component: PageNotFound,
@@ -94,4 +106,3 @@ const router = createRouter({
 });
 
 export default router;
-

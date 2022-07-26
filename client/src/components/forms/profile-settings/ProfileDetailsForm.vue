@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="legend mb-5 primary-clr">
+        <h1 class="legend mb-5">
             <font-awesome-icon icon="fa-solid fa-user-gear" /> Profile Details
         </h1>
         <div class="row">
@@ -19,7 +19,7 @@
                         <input type="date" id="dob" class="form-control" placeholder="yyyy-MM-dd"
                             v-model="profile.dob" />
                     </div>
-                    <button class="btn btn-sm px-3 btn-primary">
+                    <button class="btn btn-sm px-3 btn-dark">
                         <font-awesome-icon icon="fa-solid fa-floppy-disk" />
                         <span class="ms-2">Save Profile</span>
                     </button>
