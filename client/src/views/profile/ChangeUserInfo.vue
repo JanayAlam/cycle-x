@@ -6,7 +6,12 @@
             </div>
             <div class="col-md-9 col-sm-8">
                 <div class="card card-body c-card" aria-hidden="true">
-                    <user-information-form :user="user" :isLoading="isLoading" />
+                    <user-information-form
+                        :user="user"
+                        :data="data"
+                        :isLoading="isLoading"
+                        :submitHandler="submitHandler"
+                    />
                 </div>
             </div>
         </div>
@@ -16,9 +21,9 @@
 <script>
 import UserInformationForm from '@/components/forms/profile-settings/UserInformationForm.vue';
 import SettingsSidebar from '@/components/sidebars/SettingsSidebar.vue';
-import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex';
-
+import { reactive } from 'vue';
+import { computed } from '@vue/reactivity';
 
 export default {
     name: 'ChangeEmailNid',
@@ -27,22 +32,39 @@ export default {
         document.title = 'Update user information';
         const store = useStore();
         const isLoading = false;
+
+        const state = reactive({
+            data: {
+                nid: '',
+                email: '',
+            },
+        });
+
         const user = computed(() => store.getters.getUser);
 
         const submitHandler = async () => {
             try {
-                //
-                store.dispatch('pushNotification', { type: 'success', msg: 'User information updated' });
+                await store.dispatch('updateUser', {
+                    nid: state.data.nid,
+                    email: state.data.email,
+                });
+                state.data.nid = '';
+                state.data.email = '';
+                store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'User information updated',
+                });
             } catch (e) {
-                store.dispatch('pushNotification', { type: 'danger', msg: e.message });
+                store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: e.message,
+                });
             }
-
         };
 
-        return { user, isLoading, submitHandler };
+        return { ...state, user, isLoading, submitHandler };
     },
-}
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

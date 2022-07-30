@@ -8,11 +8,6 @@ const accountSchema = new Schema(
             min: 0,
             default: 0,
         },
-        profile: {
-            type: Schema.Types.ObjectId,
-            ref: 'Profile',
-            required: true,
-        },
     },
     { timestamps: true }
 );

@@ -1,6 +1,6 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light navigation-bar bg-success">
-        <div class="container rounded bg-gradient bg-success">
+    <nav class="navbar navbar-expand-lg navbar-light navigation-bar bg-success bg-gradient">
+        <div class="container rounded navigation-container">
             <router-link :to="{ name: 'home' }" class="navbar-brand dark-white">CycleX</router-link>
             <button class="navbar-toggler dark-white" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -54,5 +54,9 @@ export default {
 .navbar-brand {
     font-weight: 800;
     font-size: 1.3rem;
+}
+
+.navigation-container {
+    background-color: transparent;
 }
 </style>

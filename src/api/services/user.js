@@ -8,10 +8,6 @@ const findByProperty = async (key, value) => {
     return User.findOne({ [key]: value });
 };
 
-// const findByProperties = (data) => {
-//     return User.findOne({ ...data });
-// }
-
 const create = async ({ nid, email, password, roles, isEmailVerified }) => {
     let user = await findByProperty('email', email);
     if (user) throw new BadRequestError('Email address is already in use');

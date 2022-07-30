@@ -6,6 +6,7 @@ const EmailMessage = require('../email/EmailMessage');
 const jwt = require('jsonwebtoken');
 const { generateHash, compareHashedString } = require('../utils/hashing');
 const generateToken = require('../utils/generate-token');
+const accountService = require("./account");
 
 const register = async ({
     nid,
@@ -28,15 +29,18 @@ const register = async ({
         isEmailVerified,
     });
     const user = await userPayload.save();
-    // 3: creating profile
+    // 3: creating an account
+    const account = await accountService.create();
+    // 4: creating profile
     const profilePayload = await profileService.create({
         firstName,
         lastName,
         dob,
         userId: user._id,
+        accountId: account._id,
     });
-    const profile =await profilePayload.save();
-    // 4: respond with the user object
+    await profilePayload.save();
+    // 5: respond with the user object
     return user;
 };
 

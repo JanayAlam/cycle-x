@@ -64,7 +64,7 @@ export default {
                 commit('SET_PROFILE', null);
             }
         },
-        logout: ({ commit }, _payload=null) => {
+        logout: ({ commit }, _payload = null) => {
             commit('SET_TOKEN', null);
             commit('SET_USER', null);
             commit('SET_PROFILE', null);

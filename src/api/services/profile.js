@@ -28,6 +28,7 @@ const create = async ({
     userId,
     dob,
     rank,
+    accountId,
     mute,
 }) => {
     let profile = await findByProperty('user', userId);
@@ -41,6 +42,7 @@ const create = async ({
         profilePhoto: profilePhoto || '/default/default.png',
         dob,
         user: userId,
+        account: accountId,
         rank,
         mute,
     });

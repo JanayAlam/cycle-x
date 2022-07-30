@@ -19,12 +19,12 @@
                         </div>
                     </div>
                 </div>
-                <button v-if="state.isModalBtnLoading" class="btn btn-sm btn-primary" disabled type="submit">
+                <button v-if="state.isModalBtnLoading" class="btn btn-sm btn-success" disabled type="submit">
                     <div class="spinner-border spinner-border-sm" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div> Sending...
                 </button>
-                <button v-else class="btn btn-sm btn-primary" type="submit">
+                <button v-else class="btn btn-sm btn-success" type="submit">
                     <font-awesome-icon icon="fa-solid fa-paper-plane" /> Send Email
                 </button>
             </form>

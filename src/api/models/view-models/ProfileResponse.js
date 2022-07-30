@@ -11,6 +11,7 @@ class ProfileResponse {
         this.profilePhoto = `http://localhost:${PORT}/static${data.profilePhoto}`;
         this.dob = format(new Date(data.dob), 'yyyy-MM-dd');
         this.rank = data.rank;
+        this.account = data.account;
         this.user = data.user;
         this.mute = data.mute;
         this.createdAt = data.createdAt;

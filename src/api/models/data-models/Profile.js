@@ -28,6 +28,10 @@ const profileSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Rank',
         },
+        account: {
+            type: Schema.Types.ObjectId,
+            ref: 'Account',
+        },
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User',

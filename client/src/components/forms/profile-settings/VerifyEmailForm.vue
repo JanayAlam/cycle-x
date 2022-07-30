@@ -1,13 +1,18 @@
 <template>
     <form @submit.prevent="submitHandler">
         <legend class="legend mb-5">
-            <font-awesome-icon icon="fa-solid fa-user-check" /> Verify Email Address
+            <font-awesome-icon icon="fa-solid fa-user-check" /> Verify Email
+            Address
         </legend>
         <div class="display-email d-flex align-items-center">
             <font-awesome-icon icon="fa-solid fa-envelope" />
             <span class="email ms-2">{{ user.email }}</span>
             <sup>
-                <router-link :to="{ name: 'change-user-info' }" class="primary-clr">edit</router-link>
+                <router-link
+                    :to="{ name: 'change-user-info' }"
+                    class="primary-clr"
+                    >edit</router-link
+                >
             </sup>
         </div>
         <div v-if="user.isEmailVerified">
@@ -15,8 +20,15 @@
         </div>
         <div v-else>
             <div class="d-flex">
-                <input type="text" v-model="token" placeholder="Verification token" class="form-control" />
-                <button class="btn btn-dark px-4 ms-2 d-flex align-items-center">
+                <input
+                    type="text"
+                    v-model="token"
+                    placeholder="Verification token"
+                    class="form-control"
+                />
+                <button
+                    class="btn btn-dark px-4 ms-2 d-flex align-items-center"
+                >
                     <span class="me-2">Verify</span>
                     <font-awesome-icon icon="fa-solid fa-right-long" />
                 </button>
@@ -27,7 +39,9 @@
                 </div>
                 Processing
             </div>
-            <button v-else class="resent-btn mt-2">Resent the verification token</button>
+            <button v-else class="resent-btn mt-2">
+                Resent the verification token
+            </button>
         </div>
     </form>
 </template>
@@ -43,7 +57,7 @@ export default {
         isResentLoading: Boolean,
         token: String,
     },
-}
+};
 </script>
 
 <style scoped>
