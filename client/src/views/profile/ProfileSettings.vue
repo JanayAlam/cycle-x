@@ -6,7 +6,10 @@
             </div>
             <div class="col-md-9 col-sm-8">
                 <div class="card card-body c-card" aria-hidden="true">
-                    <profile-details-form :profile="profile" :submitHandler="submitHandler" />
+                    <profile-details-form
+                        :profile="data"
+                        :submitHandler="submitHandler"
+                    />
                 </div>
             </div>
         </div>
@@ -17,6 +20,7 @@
 import ProfileDetailsForm from '@/components/forms/profile-settings/ProfileDetailsForm.vue';
 import SettingsSidebar from '@/components/sidebars/SettingsSidebar.vue';
 import { computed } from '@vue/reactivity';
+import { reactive } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -28,24 +32,37 @@ export default {
 
         const profile = computed(() => store.getters.getProfile);
 
+        const state = reactive({
+            data: {
+                firstName: profile.value.firstName,
+                lastName: profile.value.lastName,
+                dob: profile.value.dob,
+                profilePhoto: profile.value.profilePhoto,
+            },
+        });
+
         const submitHandler = async () => {
             try {
                 await store.dispatch('changeProfileDetails', {
-                    firstName: profile.value.firstName,
-                    lastName: profile.value.lastName,
-                    dob: profile.value.dob,
+                    firstName: state.data.firstName,
+                    lastName: state.data.lastName,
+                    dob: state.data.dob,
                 });
-                store.dispatch('pushNotification', { type: 'success', msg: 'Profile details updated' });
+                store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'Profile details updated',
+                });
             } catch (e) {
-                store.dispatch('pushNotification', { type: 'danger', msg: e.message });
+                store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: e.message,
+                });
             }
-
         };
 
-        return { profile, submitHandler };
+        return { ...state, submitHandler };
     },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
