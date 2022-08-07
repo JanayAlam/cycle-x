@@ -36,7 +36,7 @@
                     v-model="data.confirmPassword"
                 />
             </div>
-            <button class="btn btn-sm px-3 btn-dark">
+            <button class="btn btn-sm px-3 btn-success">
                 <font-awesome-icon icon="fa-solid fa-floppy-disk" />
                 <span class="ms-2">Update Password</span>
             </button>

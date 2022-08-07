@@ -34,8 +34,8 @@
                             v-model="profile.dob"
                         />
                     </div>
-                    <button class="btn btn-sm px-3 btn-dark">
-                        <font-awesome-icon icon="fa-solid fa-floppy-disk" />
+                    <button class="btn btn-sm px-3 btn-success">
+                        <font-awesome-icon icon="fa-solid fa-check" />
                         <span class="ms-2">Save Profile</span>
                     </button>
                 </form>

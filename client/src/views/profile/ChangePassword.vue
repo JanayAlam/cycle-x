@@ -5,7 +5,7 @@
                 <settings-sidebar active="change-password" />
             </div>
             <div class="col-md-9 col-sm-8">
-                <div class="card card-body c-card" aria-hidden="true">
+                <div class="mt-4" aria-hidden="true">
                     <change-password-form
                         :data="data"
                         :submitHandler="submitHandler"

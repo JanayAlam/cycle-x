@@ -98,6 +98,17 @@ const resendVerificationToken = async (req, res, next) => {
     }
 };
 
+const verifyEmailAddress = async (req, res, next) => {
+    let user = req.user;
+    const { token } = req.body;
+    try {
+        user = await authService.verifyEmail(user, token);
+        return res.status(200).json(new UserResponse(user));
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -106,4 +117,5 @@ module.exports = {
     resetPassword,
     changePassword,
     resendVerificationToken,
+    verifyEmailAddress,
 };

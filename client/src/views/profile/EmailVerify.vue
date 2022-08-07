@@ -5,14 +5,14 @@
                 <settings-sidebar active="email-verify" />
             </div>
             <div class="col-md-9 col-sm-8">
-                <div class="card card-body c-card" aria-hidden="true">
+                <div class="mt-4" aria-hidden="true">
                     <verify-email-form
                         :resentVerificationTokenHandler="resentVerificationTokenHandler"
                         :submitHandler="submitHandler"
                         :user="user"
-                        :isLoading="isLoading"
-                        :isResentLoading="isResentLoading"
-                        :token="token"
+                        :isVerifyButtonLoading="state.isVerifyButtonLoading"
+                        :isResentLoading="state.isResentLoading"
+                        :data="state.data"
                     />
                 </div>
             </div>
@@ -34,17 +34,51 @@ export default {
         document.title = 'Verify email address';
         const store = useStore();
         const state = reactive({
-            isLoading: false,
+            data: {
+                token: '',  
+            },
+            isVerifyButtonLoading: false,
             isResentLoading: false,
-            token: '',
         });
         const user = computed(() => store.getters.getUser);
 
-        const submitHandler = () => {};
+        const submitHandler = async () => {
+            state.isVerifyButtonLoading = true;
+            try {
+                await store.dispatch('verifyEmailAddress', { token: state.data.token });
+                store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'Your account has been activated.',
+                });
+            } catch (e) {
+                store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: e.message,
+                });
+            } finally {
+                state.isVerifyButtonLoading = false;
+            }
+        };
 
-        const resentVerificationTokenHandler = () => {};
+        const resentVerificationTokenHandler = async () => {
+            state.isResentLoading = true;
+            try {
+                await store.dispatch('resendEmailVerificationToken');
+                store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'An email has been sent to your email address with a verification code.',
+                });
+            } catch (e) {
+                store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: e.message,
+                });
+            } finally {
+                state.isResentLoading = false;
+            }
+        };
 
-        return { ...state, user, submitHandler, resentVerificationTokenHandler };
+        return { state, user, submitHandler, resentVerificationTokenHandler };
     },
 }
 </script>

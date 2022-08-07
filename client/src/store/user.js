@@ -30,5 +30,27 @@ export default {
                 throw error;
             }
         },
+        resendEmailVerificationToken: async ({ commit }, _payload) => {
+            try {
+                await axios.get(`/auth/resend-email-verification-token`);
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
+        },
+        verifyEmailAddress: async ({ commit }, { token }) => {
+            try {
+                const response = await axios.patch(`/auth/verify-email`, { token });
+                commit('SET_USER', response.data);
+                return response.data;
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
+        },
     },
 };

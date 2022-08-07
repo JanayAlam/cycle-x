@@ -128,11 +128,22 @@ const resendVerificationToken = async (email) => {
     if (!user) throw new NotFoundError('User not found');
     const token = generateToken(8);
     // 2: updating user with the token in database
-    user.passwordResetToken = await generateHash(token);
+    user.isEmailVerified = false;
+    user.emailVerificationToken = await generateHash(token);
     await user.save();
     emailService.sendEmailVerificationToken(email, token);
     // 3: response back with the user
     return user;
+};
+
+const verifyEmail = async (user, token) => {
+    // 1: match the verification code
+    const isMatched = await compareHashedString(token, user.emailVerificationToken);
+    if (!isMatched) throw new BadRequestError('Email verification token did not match.')
+    // 2: response after activating the user
+    user.isEmailVerified = true;
+    user.emailVerificationToken = null;
+    return user.save();
 };
 
 module.exports = {
@@ -143,4 +154,5 @@ module.exports = {
     resetPassword,
     changePassword,
     resendVerificationToken,
+    verifyEmail,
 };

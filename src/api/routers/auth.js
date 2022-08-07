@@ -82,5 +82,16 @@ router.get(
     passport.authenticate('jwt', { session: false }, null),
     authController.resendVerificationToken
 );
+/**
+ * verify email address
+ * @route /api/v1/auth/verify-email
+ * @method PATCH
+ * @visibility Private
+ */
+router.patch(
+    '/verify-email',
+    passport.authenticate('jwt', { session: false }, null),
+    authController.verifyEmailAddress
+);
 
 module.exports = router;

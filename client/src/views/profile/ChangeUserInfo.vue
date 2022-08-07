@@ -5,7 +5,7 @@
                 <settings-sidebar active="change-user-info" />
             </div>
             <div class="col-md-9 col-sm-8">
-                <div class="card card-body c-card" aria-hidden="true">
+                <div class="mt-4" aria-hidden="true">
                     <user-information-form
                         :user="user"
                         :data="data"

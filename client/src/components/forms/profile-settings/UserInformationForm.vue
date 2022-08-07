@@ -29,8 +29,8 @@
                 />
             </div>
         </div>
-        <button class="btn btn-sm px-3 mt-2 btn-dark" type="submit">
-            <font-awesome-icon icon="fa-solid fa-floppy-disk" />
+        <button class="btn btn-sm px-3 mt-2 btn-success" type="submit">
+            <font-awesome-icon icon="fa-solid fa-check" />
             <span class="ms-2">Save User</span>
         </button>
     </form>
