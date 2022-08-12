@@ -70,7 +70,7 @@
                 <font-awesome-icon icon="fa-solid fa-arrow-up" />
                 <span class="ms-2">Update Password</span>
             </button>
-            <button v-else class="btn btn-sm px-3 btn-success">
+            <button v-else class="btn btn-sm px-3 btn-success" disabled>
                 <div class="spinner-border spinner-border-sm" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>

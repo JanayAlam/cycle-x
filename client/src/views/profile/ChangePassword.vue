@@ -59,8 +59,8 @@ export default {
 
             // validation
             v$.value.$validate();
-            if (v$.$error) {
-                state.data.isLoading = false;
+            if (v$.value.$error) {
+                state.isLoading = false;
                 return;
             }
 
