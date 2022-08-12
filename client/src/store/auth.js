@@ -95,5 +95,19 @@ export default {
                 throw error;
             }
         },
+        changePassword: async (_context, payload) => {
+            try {
+                await axios.patch(`/auth/change-password`, {
+                    oldPassword: payload.oldPassword,
+                    newPassword: payload.newPassword,
+                    confirmPassword: payload.confirmPassword,
+                });
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
+        },
     },
 };
