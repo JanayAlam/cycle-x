@@ -17,7 +17,9 @@ export default {
                 } else if (!nid && email) {
                     payload.email = email;
                 } else {
-                    return;
+                    throw new Error(
+                        'One of the email and NID field is required'
+                    );
                 }
 
                 const response = await axios.patch(`/users`, payload);
@@ -42,7 +44,9 @@ export default {
         },
         verifyEmailAddress: async ({ commit }, { token }) => {
             try {
-                const response = await axios.patch(`/auth/verify-email`, { token });
+                const response = await axios.patch(`/auth/verify-email`, {
+                    token,
+                });
                 commit('SET_USER', response.data);
                 return response.data;
             } catch (error) {
