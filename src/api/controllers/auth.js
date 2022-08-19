@@ -1,6 +1,6 @@
-const { auth: authService, user: userService } = require('../services');
-const {UserResponse, ProfileResponse} = require("../models/view-models");
-const {BadRequestError, NotFoundError} = require("../errors/apiErrors");
+const { auth: authService, email: emailService } = require('../services');
+const { UserResponse, ProfileResponse } = require("../models/view-models");
+const { BadRequestError, NotFoundError } = require("../errors/apiErrors");
 
 const register = async (req, res, next) => {
     /**
@@ -54,7 +54,7 @@ const getMe = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
 const forgetPassword = async (req, res, next) => {
     const { email } = req.body;
@@ -64,7 +64,7 @@ const forgetPassword = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
 
 const resetPassword = async (req, res, next) => {
     const { password } = req.body;
@@ -72,6 +72,38 @@ const resetPassword = async (req, res, next) => {
     try {
         await authService.resetPassword(userId, token, password);
         return res.status(203).send();
+    } catch (err) {
+        next(err);
+    }
+};
+
+const changePassword = async (req, res, next) => {
+    const { oldPassword, newPassword } = req.body;
+    const { _id } = req.user;
+    try {
+        await authService.changePassword(_id, oldPassword, newPassword);
+        return res.status(203).send();
+    } catch (err) {
+        next(err);
+    }
+};
+
+const resendVerificationToken = async (req, res, next) => {
+    const { email } = req.user;
+    try {
+        await authService.resendVerificationToken(email);
+        return res.status(203).send();
+    } catch (err) {
+        next(err);
+    }
+};
+
+const verifyEmailAddress = async (req, res, next) => {
+    let user = req.user;
+    const { token } = req.body;
+    try {
+        user = await authService.verifyEmail(user, token);
+        return res.status(200).json(new UserResponse(user));
     } catch (err) {
         next(err);
     }
@@ -83,4 +115,7 @@ module.exports = {
     getMe,
     forgetPassword,
     resetPassword,
+    changePassword,
+    resendVerificationToken,
+    verifyEmailAddress,
 };

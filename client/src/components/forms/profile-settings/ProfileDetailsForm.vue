@@ -12,8 +12,21 @@
                             type="text"
                             id="firstName"
                             class="form-control"
+                            :class="{ 'is-invalid': v$.firstName.$error }"
+                            placeholder="Enter first name"
                             v-model="profile.firstName"
                         />
+                        <div
+                            class="invalid-feedback"
+                            v-if="v$.firstName.$error"
+                        >
+                            <div
+                                v-for="error in v$.firstName.$errors"
+                                :key="error.$message"
+                            >
+                                {{ error.$message }}
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group mb-2">
                         <label for="lastName" class="mb-1">Last name</label>
@@ -21,8 +34,18 @@
                             type="text"
                             id="lastName"
                             class="form-control"
+                            :class="{ 'is-invalid': v$.lastName.$error }"
+                            placeholder="Enter last name"
                             v-model="profile.lastName"
                         />
+                        <div class="invalid-feedback" v-if="v$.lastName.$error">
+                            <div
+                                v-for="error in v$.lastName.$errors"
+                                :key="error.$message"
+                            >
+                                {{ error.$message }}
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group mb-2">
                         <label for="dob" class="mb-1">Date of birth</label>
@@ -30,13 +53,35 @@
                             type="date"
                             id="dob"
                             class="form-control"
+                            :class="{ 'is-invalid': v$.dob.$error }"
                             placeholder="yyyy-MM-dd"
                             v-model="profile.dob"
                         />
+                        <div class="invalid-feedback" v-if="v$.dob.$error">
+                            <div
+                                v-for="error in v$.dob.$errors"
+                                :key="error.$message"
+                            >
+                                {{ error.$message }}
+                            </div>
+                        </div>
                     </div>
-                    <button class="btn btn-sm px-3 btn-dark">
-                        <font-awesome-icon icon="fa-solid fa-floppy-disk" />
+                    <button
+                        v-if="!isLoading"
+                        class="btn btn-sm px-3 btn-success"
+                        type="submit"
+                    >
+                        <font-awesome-icon icon="fa-solid fa-check" />
                         <span class="ms-2">Save Profile</span>
+                    </button>
+                    <button v-else class="btn btn-sm px-3 btn-success" disabled>
+                        <div
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                        >
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="ms-2">Processing...</span>
                     </button>
                 </form>
             </div>
@@ -67,10 +112,9 @@ export default {
     name: 'ProfileDetailsForm',
     props: {
         profile: Object,
+        isLoading: Boolean,
+        v$: Object,
         submitHandler: Function,
-    },
-    setup(_props) {
-        //
     },
 };
 </script>

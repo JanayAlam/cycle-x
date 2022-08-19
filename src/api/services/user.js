@@ -1,5 +1,6 @@
 const User = require('../models/data-models/User');
 const { BadRequestError } = require('../errors/apiErrors');
+const emailService = require('./email');
 
 const findByProperty = async (key, value) => {
     if (key === 'id') {
@@ -29,17 +30,13 @@ const create = async ({ nid, email, password, roles, isEmailVerified }) => {
 };
 
 const update = async (id, { nid, email, isEmailVerified }) => {
-    const user = await findByProperty('id', id);
+    let user = await findByProperty('id', id);
     if (!user) {
         throw new BadRequestError('No user found with the provided id');
     }
 
     if (email && email !== user.email) {
-        const isEmailValid = await findByProperty('email', email);
-        if (isEmailValid) {
-            throw new BadRequestError('Email is already in use');
-        }
-        isEmailVerified = false;
+        user = await emailService.update(user, email);
     }
 
     if (nid && nid !== user.nid) {

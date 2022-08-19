@@ -5,12 +5,13 @@
                 <settings-sidebar active="change-user-info" />
             </div>
             <div class="col-md-9 col-sm-8">
-                <div class="card card-body c-card" aria-hidden="true">
+                <div class="mt-4" aria-hidden="true">
                     <user-information-form
                         :user="user"
-                        :data="data"
-                        :isLoading="isLoading"
+                        :data="state.data"
+                        :isLoading="state.isLoading"
                         :submitHandler="submitHandler"
+                        :v$="v$"
                     />
                 </div>
             </div>
@@ -24,6 +25,8 @@ import SettingsSidebar from '@/components/sidebars/SettingsSidebar.vue';
 import { useStore } from 'vuex';
 import { reactive } from 'vue';
 import { computed } from '@vue/reactivity';
+import useVuelidate from '@vuelidate/core';
+import { email, minLength, maxLength } from '@vuelidate/validators';
 
 export default {
     name: 'ChangeEmailNid',
@@ -38,11 +41,29 @@ export default {
                 nid: '',
                 email: '',
             },
+            isLoading: false,
         });
 
         const user = computed(() => store.getters.getUser);
 
+        const rules = computed(() => {
+            return {
+                nid: { minLength: minLength(4), maxLength: maxLength(11) },
+                email: { email },
+            };
+        });
+        const v$ = useVuelidate(rules, state.data);
+
         const submitHandler = async () => {
+            state.isLoading = true;
+
+            // validation
+            v$.value.$validate();
+            if (v$.value.$error) {
+                state.isLoading = false;
+                return;
+            }
+
             try {
                 await store.dispatch('updateUser', {
                     nid: state.data.nid,
@@ -59,10 +80,12 @@ export default {
                     type: 'danger',
                     msg: e.message,
                 });
+            } finally {
+                state.isLoading = false;
             }
         };
 
-        return { ...state, user, isLoading, submitHandler };
+        return { state, user, isLoading, submitHandler, v$ };
     },
 };
 </script>
