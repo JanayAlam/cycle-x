@@ -12,6 +12,7 @@
     "make:view": "vue-cli-service make:view"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.72",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",

@@ -1,20 +1,22 @@
 <template>
-    <div class="home" v-if="isAuthenticated">
-        <ol>
-            <li>{{ getUser.email }}</li>
-            <li>{{ getUser.isEmailVerified }}</li>
-            <li>{{ getProfile.firstName }}</li>
-            <li>{{ getProfile.lastName }}</li>
-        </ol>
-        <button @click="getLocation()">Try It</button>
-        <h1>{{ this.latitude }} latitude, {{ this.longitude }} longitude</h1>
+    <div>
+        <div>
+            <GMapMap :center="center" :zoom="17" map-type-id="terrain" style="width: 100%; height: 100vh">
+                <GMapMarker :key="id" :position="center" />
+            </GMapMap>
+        </div>
+        <div class="position">
+            <div >
+                <button @click="getLocation()">Get Location</button>
+            </div>
+        </div>
     </div>
+
 </template>
 
 <script>
 import { ref } from 'vue';
 import { mapGetters } from 'vuex';
-import { computed } from '@vue/reactivity';
 
 export default {
     name: 'Home',
@@ -33,16 +35,18 @@ export default {
     data() {
         return {
             latitude: 0.0,
-            longitude: 0.0
+            longitude: 0.0,
+            center: { lat: 51.093048, lng: 6.842120 },
+            id: '3a17f42a4efce004'
         }
     },
     methods: {
-        getLocation: function () {
+        getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
-                        this.latitude = position.coords.latitude;
-                        this.longitude = position.coords.longitude;
+                        this.center.lat = position.coords.latitude;
+                        this.center.lng = position.coords.longitude;
                     },
                     error => {
                         console.log(error.message);
@@ -68,3 +72,12 @@ export default {
 }*/
 
 </script>
+
+<style scoped>
+.position {
+    position: absolute;
+    bottom: 10%;
+    left: 91%;
+    font-size: large;
+}
+</style>
