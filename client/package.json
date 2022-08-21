@@ -27,6 +27,7 @@
     "font-awesome-animation": "^1.1.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vue3-qrcode-reader": "^0.0.1",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
