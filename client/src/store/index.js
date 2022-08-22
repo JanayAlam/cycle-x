@@ -3,6 +3,8 @@ import auth from './auth';
 import profile from './profile';
 import ui from './ui';
 import user from './user';
+import hub from './hub';
+
 
 export default createStore({
     state: {
@@ -39,5 +41,6 @@ export default createStore({
         ui,
         profile,
         user,
+        hub,
     },
 });

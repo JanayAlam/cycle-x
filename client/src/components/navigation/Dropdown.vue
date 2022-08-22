@@ -19,20 +19,33 @@
             >
         </button>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li v-show="isAdmin">
+                <router-link
+                    class="dropdown-item"
+                    :to="{ name: 'admin-dashboard' }"
+                    ><font-awesome-icon
+                        icon="fa-solid fa-anchor-lock"
+                        width="25px"
+                    />
+                    <span class="ms-1">Admin Section</span></router-link
+                >
+            </li>
             <li>
                 <router-link class="dropdown-item" :to="{ name: 'dashboard' }"
-                    ><font-awesome-icon icon="fa-solid fa-chart-line" /><span class="ms-1">Dashboard</span></router-link
+                    ><font-awesome-icon
+                        icon="fa-solid fa-chart-line"
+                        width="25px"
+                    /><span class="ms-1">Profile Dashboard</span></router-link
                 >
             </li>
             <li>
                 <router-link
                     class="dropdown-item"
                     :to="{ name: 'profile-settings' }"
-                    ><font-awesome-icon icon="fa-solid fa-user" />
+                    ><font-awesome-icon icon="fa-solid fa-user" width="25px" />
                     <span class="ms-1">Profile Settings</span></router-link
                 >
             </li>
-
             <li>
                 <hr class="dropdown-divider" />
             </li>
@@ -45,7 +58,7 @@
                     <div class="d-flex align-items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="16"
+                            width="25px"
                             height="16"
                             fill="currentColor"
                             class="bi bi-box-arrow-left"
@@ -83,7 +96,10 @@ export default {
         const user = computed(() => {
             return store.getters.getUser;
         });
-        return { profile, user };
+        const isAdmin = computed(() => {
+            return store.getters.getUser.roles.includes('ADMIN')
+        })
+        return { profile, user, isAdmin };
     },
 };
 </script>
@@ -91,6 +107,8 @@ export default {
 <style scoped>
 .dropdown-menu {
     font-size: 0.9rem;
+    background: #f8f8f8;
+    border: 0;
 }
 
 button,

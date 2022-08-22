@@ -32,26 +32,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.list-group-item {
-    font-size: 0.95rem;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border: 0;
-    background-color: transparent;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.active,
-.list-group-item:hover {
-    /* background-color: #dff1fc;
-    color: #072A53; */
-    background-color: #8df58d46;
-    color: #09441c;
-}
-
-.list-group-item:hover {
-    text-decoration: underline;
-}
+<style scoped src="@/assets/css/sidebar-styles.css">
 </style>
