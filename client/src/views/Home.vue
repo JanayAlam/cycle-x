@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div v-if="isAuthenticated">
+        <!--Google Map Implementation-->
         <div>
             <GMapMap :center="currentUserLocation" :zoom="17" map-type-id="terrain" style="width: 100%; height: 100vh">
                 <GMapCluster>
@@ -14,21 +15,30 @@
                 </GMapCluster>
             </GMapMap>
         </div>
-        <div v-if="isVisible" class="QR-code-reader">
-            <div>
-                <p>{{ error }}</p>
-                <h1 class="bg-white">{{ decodedString }}</h1>
-                <qrcode-stream @init="OnInit" @decode="onDecode"></qrcode-stream>
+        <!--QR Code Reader Live Stream-->
+        <div v-if="isQRStreamVisible" class="QR-code-reader-stream">
+            <div class="text-end">
+                <button @click="closeQRCodeScanner()" class="btn btn-link">
+                    <img src="../../../public/default/stop-button-icon.png" height="30" width="30">
+                </button>
             </div>
+
+            <p>{{ error }}</p>
+            <p class="bg-white fs-3">{{ decodedString }}</p>
+            <qrcode-stream @init="OnInit" @decode="onDecode"></qrcode-stream>
         </div>
-        <div class="position">
-            <div>
-                <button @click="getLocation()">Get Location</button>
-                <button @click="getQRCode()">Camera</button>
+        <!--Current Location & QR Code Scanner-->
+        <div class="Location-QR-Scanner">
+            <div class="vstack">
+                <button class="btn btn-link" @click="openQRCodeScanner()">
+                    <img src="../../../public/default/scan-qr-code-icon.jpg" height="100" width="100">
+                </button>
+                <button class="btn btn-link" @click="getCurrentLocation()">
+                    <img src="../../../public/default/Location-Icon.png" height="80" width="80">
+                </button>
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -46,8 +56,6 @@ export default {
     setup() {
         const state = ref({})
 
-        //getLocation();
-
         return { state }
     },
     data() {
@@ -55,22 +63,19 @@ export default {
             //QR Code Variables
             error: '',
             decodedString: '',
-            isVisible: false,
+            isQRStreamVisible: false,
 
             //hubIcon: '../../../public/default/CycleX-Hub-Icon.png',
             hubIcon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png',
             currentUserLocation: { lat: 23.76850367011616, lng: 90.42554965500942 },
-            rootLocation: { lat: 23.76850367011616, lng: 90.42554965500942 },
 
             cycleXHub1: { lat: 23.764582527423773, lng: 90.42913999532198 },
             cycleXHub2: { lat: 23.75491137184827, lng: 90.41557908203598 },
             cycleXHub3: { lat: 23.77023019851235, lng: 90.40962595691866 },
-
-            id: '3a17f42a4efce004'
         }
     },
     methods: {
-        getLocation() {
+        getCurrentLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
@@ -102,6 +107,7 @@ export default {
                 } else if (error.name === 'StreamApiNotSupportedError') {
                     this.error = 'browser seems to be lacking features';
                 }
+                this.isQRStreamVisible = false;
             }
             finally {
                 // hide loading indicator
@@ -110,39 +116,32 @@ export default {
         onDecode(decodedString) {
             this.decodedString = decodedString;
         },
-        getQRCode() {
-            this.isVisible = true;
+        openQRCodeScanner() {
+            this.isQRStreamVisible = true;
+        },
+        closeQRCodeScanner() {
+            this.isQRStreamVisible = false;
+        },
+        parseJSON() {
+            let cycle_id = JSON.parse(this.decodedString);
         }
     }
 }
-
-/*function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.latitude = position.coords.latitude;
-                this.longitude = position.coords.longitude;
-            },
-            error => {
-                console.log(error.message);
-            },
-        )
-    }
-}*/
-
 </script>
 
 <style scoped>
-.position {
+.Location-QR-Scanner {
     position: absolute;
-    bottom: 10%;
-    left: 91%;
+    bottom: 12%;
+    right: 0%;
     font-size: large;
+    background: transparent;
 }
 
-.QR-code-reader {
+.QR-code-reader-stream {
     position: absolute;
+    top: 15%;
     bottom: 20%;
-    left: 10%;
+    left: 20%;
 }
 </style>
