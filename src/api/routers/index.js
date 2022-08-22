@@ -11,6 +11,10 @@ const routes = [
         path: '/profiles',
         router: require('./profile'),
     },
+    {
+        path: '/hubs',
+        router: require('./hub'),
+    },
 ];
 
 module.exports = (app) => {
