@@ -21,7 +21,7 @@ const update = async (id, { cycleNumber, ridingStatus, model, hubId }) => {
     let cycle = await findByProperty('id', id);
     if (!cycle) throw new BadRequestError('Cycle not found with provided id');
 
-    if (cycleNumber) {
+    if (cycleNumber && cycleNumber !== cycle.cycleNumber) {
         const query_cycle = await findByProperty('cycleNumber', cycleNumber);
         if (query_cycle) {
             throw new BadRequestError('Cycle number already exist');

@@ -50,17 +50,18 @@
                         </div>
                     </div> -->
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-2" v-show="state.modalFor === 'edit'">
                         <label for="ridingStatus" class="form-label mb-1"
                             >Status</label
                         >
-                        <input
+                        <select
                             v-model="state.info.ridingStatus"
-                            type="text"
-                            class="form-control"
                             id="ridingStatus"
-                            placeholder="Status"
-                        />
+                            class="form-control"
+                        >
+                            <option :value="false">Available</option>
+                            <option :value="true">Not available</option>
+                        </select>
                         <!-- <input
                         v-model="info.name"
                         type="text"
@@ -106,6 +107,19 @@
                     </div>
                     <div class="mb-2">
                         <label for="hubId" class="form-label mb-1">Hub</label>
+                        <!-- <select name="hubId" id="hubId" class="form-control">
+                            <option value="" v-if="!state.data.hubs">
+                                Not found any hub!
+                            </option>
+                            <option
+                                v-else
+                                :value="hub.id"
+                                v-for="hub in state.data.hubs"
+                                :key="hub.id"
+                            >
+                                {{ hub.name }}
+                            </option>
+                        </select> -->
                         <input
                             v-model="state.info.hubId"
                             type="text"
@@ -185,6 +199,7 @@ export default {
             },
             data: {
                 cycles: null,
+                hubs: null,
             },
         });
 
@@ -249,8 +264,8 @@ export default {
                     state.info = {
                         id: '',
                         cycleNumber: '',
-                        model: '',
                         ridingStatus: '',
+                        model: '',
                         hubId: '',
                     };
                     store.dispatch('pushNotification', {
@@ -325,7 +340,6 @@ export default {
                     });
                 })
                 .catch((error) => {
-                    console.log(error.response);
                     store.dispatch('pushNotification', {
                         type: 'danger',
                         msg: error.response.message
@@ -343,6 +357,24 @@ export default {
             }
         };
 
+        const getHubs = () => {
+            axios
+                .get(`/hubs`)
+                .then((res) => {
+                    state.data.hubs = res.data;
+                })
+                .catch((error) => {
+                    store.dispatch('pushNotification', {
+                        type: 'danger',
+                        msg: error.response.message
+                            ? error.response
+                            : error.message,
+                    });
+                });
+        };
+
+        getHubs();
+
         return {
             state,
             withAction: true,
@@ -351,6 +383,7 @@ export default {
             editHandler,
             deleteHandler,
             modalToggler,
+            getHubs,
             submitHandler,
         };
     },
