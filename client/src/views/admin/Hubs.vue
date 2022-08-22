@@ -230,7 +230,9 @@ export default {
                 .catch((error) => {
                     store.dispatch('pushNotification', {
                         type: 'danger',
-                        msg: error.message,
+                        msg: error.response.message
+                            ? error.response
+                            : error.message,
                     });
                 });
         };
@@ -269,13 +271,36 @@ export default {
                 .catch((error) => {
                     store.dispatch('pushNotification', {
                         type: 'danger',
-                        msg: error.message,
+                        msg: error.response.message
+                            ? error.response
+                            : error.message,
                     });
                 });
         };
 
         const deleteHandler = (id) => {
-            console.log(id);
+            axios
+                .delete(`/hubs/${id}`)
+                .then((res) => {
+                    state.data.hubs = state.data.hubs.filter((hub) => {
+                        if (hub.id !== id) {
+                            return true;
+                        }
+                    });
+                    store.dispatch('pushNotification', {
+                        type: 'success',
+                        msg: 'Hub deleted successfully',
+                    });
+                })
+                .catch((error) => {
+                    console.log(error.response);
+                    store.dispatch('pushNotification', {
+                        type: 'danger',
+                        msg: error.response.message
+                            ? error.response
+                            : error.message,
+                    });
+                });
         };
 
         const submitHandler = () => {
