@@ -13,10 +13,15 @@ const cycleSchema = new Schema(
             required: true,
         },
         model: {
-            type: Schema.Types.ObjectId,
-            ref: 'Model',
+            type: String,
+            trim: true,
             required: true,
         },
+        // model: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: 'Model',
+        //     required: true,
+        // },
         hub: {
             type: Schema.Types.ObjectId,
             ref: 'Hub',

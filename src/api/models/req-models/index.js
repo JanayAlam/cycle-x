@@ -6,4 +6,7 @@ module.exports = {
     changePasswordReqModel: require('./auth/change-password-req-model'),
     profileReqModel: require('./profile/update-profile'),
     userReqModel: require('./user/update-user'),
+    hubReqModel: require('./hub/hub-req-model'),
+    cycleReqModel: require('./cycle/cycle-req-model'),
+    cycleUpdateModel: require('./cycle/cycle-update-model'),
 };
