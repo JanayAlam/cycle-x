@@ -12,7 +12,7 @@
                     :info="state.info"
                     :modalToggler="modalToggler"
                     :createHandler="createHandler"
-                    :editHandler="editHandler"
+                    :editSelector="editSelector"
                     :deleteHandler="deleteHandler"
                 />
             </div>
@@ -21,7 +21,7 @@
                 :toggler="modalToggler"
                 :modalActive="state.modalActive"
             >
-                <form @submit.prevent="createHandler">
+                <form @submit.prevent="submitHandler">
                     <div class="mb-2">
                         <label for="name" class="form-label mb-1">Name</label>
                         <input
@@ -115,7 +115,15 @@
                     </div>
                     Creating...
                 </button> -->
-                    <button class="btn btn-sm btn-success" type="submit">
+                    <button
+                        v-if="state.modalFor === 'edit'"
+                        class="btn btn-sm btn-success"
+                        type="submit"
+                    >
+                        <font-awesome-icon icon="fa-solid fa-plus" />
+                        Edit
+                    </button>
+                    <button v-else class="btn btn-sm btn-success" type="submit">
                         <font-awesome-icon icon="fa-solid fa-plus" />
                         Create
                     </button>
@@ -141,6 +149,7 @@ export default {
         const store = useStore();
         const state = reactive({
             modalActive: false,
+            modalFor: 'create',
             isModalBtnLoading: false,
             info: {
                 name: '',
@@ -151,6 +160,10 @@ export default {
                 hubs: null,
             },
         });
+
+        const modalForSelector = (x) => {
+            state.modalFor = x;
+        };
 
         const getAllHubs = () => {
             axios
@@ -176,6 +189,14 @@ export default {
         getAllHubs();
 
         const modalToggler = () => {
+            if (state.modalFor == 'edit') {
+                state.info = {
+                    name: '',
+                    lng: '',
+                    lat: '',
+                };
+            }
+            state.modalFor = 'create';
             state.modalActive = !state.modalActive;
         };
 
@@ -211,38 +232,62 @@ export default {
                 });
         };
 
+        const editSelector = (id) => {
+            const hub = state.data.hubs.filter((h) => h.id === id)[0];
+            state.info.id = hub.id;
+            state.info.name = hub.name;
+            state.info.lng = hub.longitude;
+            state.info.lat = hub.latitude;
+            modalToggler();
+            modalForSelector('edit');
+        };
+
         const editHandler = (id) => {
-            console.log(id);
+            axios
+                .get(`/hubs/{id}`, data)
+                .then((res) => {
+                    state.data.hubs.push({
+                        id: res.data.id,
+                        name: res.data.name,
+                        longitude: res.data.longitude,
+                        latitude: res.data.latitude,
+                    });
+                    modalToggler();
+                    store.dispatch('pushNotification', {
+                        type: 'success',
+                        msg: 'Hub edited successfully',
+                    });
+                })
+                .catch((error) => {
+                    store.dispatch('pushNotification', {
+                        type: 'danger',
+                        msg: error.message,
+                    });
+                });
         };
 
         const deleteHandler = (id) => {
             console.log(id);
         };
 
+        const submitHandler = () => {
+            if (state.modalFor === 'edit') {
+                editHandler();
+            } else {
+                createHandler();
+            }
+        };
+
         return {
             state,
             withAction: true,
             createHandler,
+            editSelector,
             editHandler,
             deleteHandler,
             modalToggler,
+            submitHandler,
         };
-    },
-    computed: {
-        async getAllHubs() {
-            try {
-                const hubs = await store.dispatch('fetchAllHubs');
-                return hubs.map((hub) => {
-                    return {
-                        name: hub.name,
-                        longitude: hub.longitude,
-                        latitude: hub.longitude,
-                    };
-                });
-            } catch (e) {
-                throw e;
-            }
-        },
     },
 };
 </script>

@@ -10,7 +10,7 @@
             :dataHeaders="dataHeaders"
             :data="data"
             :withAction="withAction"
-            :editHandler="editHandler"
+            :editSelector="editSelector"
             :deleteHandler="deleteHandler"
             :modalToggler="modalToggler"
         />
@@ -27,7 +27,7 @@ export default {
         data: Array,
         info: Object,
         createHandler: Function,
-        editHandler: Function,
+        editSelector: Function,
         deleteHandler: Function,
         modalToggler: Function,
     },

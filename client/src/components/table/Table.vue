@@ -11,7 +11,7 @@
         <tbody>
             <tr v-for="hub in data" :key="hub.id">
                 <th v-if="withAction" scope="row">
-                    <button class="btn btn-sm btn-primary me-2" @click="editHandler(hub.id)">
+                    <button class="btn btn-sm btn-primary me-2" @click="editSelector(hub.id)">
                         <font-awesome-icon icon="fa-solid fa-pen" />
                     </button>
                     <button class="btn btn-sm btn-danger" @click="deleteHandler(hub.id)">
@@ -33,7 +33,7 @@ export default {
         dataHeaders: Array,
         data: Array,
         withAction: Boolean,
-        editHandler: Function,
+        editSelector: Function,
         deleteHandler: Function,
     },
 };
