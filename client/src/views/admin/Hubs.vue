@@ -5,8 +5,10 @@
                 <admin-sidebar active="admin-hubs" />
             </div>
             <div class="a-dashboard-main col-md-9 col-sm-8">
+                <div v-if="state.data.hubs === null">Loading...</div>
                 <hubs-table
-                    :data="data"
+                    v-else
+                    :data="state.data.hubs"
                     :info="state.info"
                     :modalToggler="modalToggler"
                     :createHandler="createHandler"
@@ -47,7 +49,9 @@
                     </div> -->
                     </div>
                     <div class="mb-2">
-                        <label for="lat" class="form-label mb-1">Latitude</label>
+                        <label for="lat" class="form-label mb-1"
+                            >Latitude</label
+                        >
                         <input
                             v-model="state.info.lat"
                             type="text"
@@ -73,12 +77,14 @@
                     </div> -->
                     </div>
                     <div class="mb-2">
-                        <label for="log" class="form-label mb-1">Longitude</label>
+                        <label for="lng" class="form-label mb-1"
+                            >Longitude</label
+                        >
                         <input
-                            v-model="state.info.log"
+                            v-model="state.info.lng"
                             type="text"
                             class="form-control"
-                            id="log"
+                            id="lng"
                             placeholder="Longitude of the location"
                         />
                         <!-- <input
@@ -124,56 +130,85 @@ import AdminSidebar from '@/components/sidebars/AdminSidebar.vue';
 import HubsTable from '@/components/admin-panel/HubsTable.vue';
 import { reactive } from 'vue';
 import Modal from '@/components/modal/Modal.vue';
+import axios from 'axios';
+import { useStore } from 'vuex';
 
 export default {
     name: 'Hubs',
     components: { AdminSidebar, HubsTable, Modal },
     setup() {
         document.title = 'All hubs';
-
-        const data = [
-            {
-                id: '507f1f77bcf86cd799439011',
-                name: 'Bashundhara',
-                longitude: 65.96,
-                latitude: 65.96,
-            },
-            {
-                id: '507f1f77bcf86cd799439013',
-                name: 'Banani',
-                longitude: 12.34,
-                latitude: 46.57,
-            },
-            {
-                id: '507f1f77bcf86cd799439014',
-                name: 'Gulshan',
-                longitude: 96.16,
-                latitude: 699.12,
-            },
-            {
-                id: '507f1f77bcf86cd799439012',
-                name: 'Cumilla',
-                longitude: 458.14,
-                latitude: 89.78,
-            },
-        ];
-
+        const store = useStore();
         const state = reactive({
             modalActive: false,
             isModalBtnLoading: false,
             info: {
                 name: '',
-                log: '',
+                lng: '',
                 lat: '',
             },
+            data: {
+                hubs: null,
+            },
         });
+
+        const getAllHubs = () => {
+            axios
+                .get(`/hubs`)
+                .then((res) => {
+                    state.data.hubs = res.data.map((hub) => {
+                        return {
+                            id: hub.id,
+                            name: hub.name,
+                            longitude: hub.longitude,
+                            latitude: hub.longitude,
+                        };
+                    });
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        throw error.response.data;
+                    }
+                    throw error;
+                });
+        };
+
+        getAllHubs();
 
         const modalToggler = () => {
             state.modalActive = !state.modalActive;
         };
 
         const createHandler = () => {
-            console.log();
+            const data = {
+                ...state.info,
+            };
+            axios
+                .post(`/hubs`, data)
+                .then((res) => {
+                    state.data.hubs.push({
+                        id: res.data.id,
+                        name: res.data.name,
+                        longitude: res.data.longitude,
+                        latitude: res.data.latitude,
+                    });
+                    modalToggler();
+                    state.info = {
+                        name: '',
+                        lng: '',
+                        lat: '',
+                    };
+                    store.dispatch('pushNotification', {
+                        type: 'success',
+                        msg: 'Hub added successfully',
+                    });
+                })
+                .catch((error) => {
+                    store.dispatch('pushNotification', {
+                        type: 'danger',
+                        msg: error.message,
+                    });
+                });
         };
 
         const editHandler = (id) => {
@@ -185,7 +220,6 @@ export default {
         };
 
         return {
-            data,
             state,
             withAction: true,
             createHandler,
@@ -193,6 +227,22 @@ export default {
             deleteHandler,
             modalToggler,
         };
+    },
+    computed: {
+        async getAllHubs() {
+            try {
+                const hubs = await store.dispatch('fetchAllHubs');
+                return hubs.map((hub) => {
+                    return {
+                        name: hub.name,
+                        longitude: hub.longitude,
+                        latitude: hub.longitude,
+                    };
+                });
+            } catch (e) {
+                throw e;
+            }
+        },
     },
 };
 </script>
