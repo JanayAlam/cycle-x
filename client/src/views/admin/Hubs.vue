@@ -120,7 +120,7 @@
                         class="btn btn-sm btn-success"
                         type="submit"
                     >
-                        <font-awesome-icon icon="fa-solid fa-plus" />
+                        <font-awesome-icon icon="fa-solid fa-check" />
                         Edit
                     </button>
                     <button v-else class="btn btn-sm btn-success" type="submit">
