@@ -2,9 +2,17 @@ import axios from 'axios';
 
 export default {
     namespace: true,
-    state: {},
-    getters: {},
-    mutations: {},
+    state: {
+        profiles: [],
+    },
+    getters: {
+        getProfiles: (state) => state.profiles,
+    },
+    mutations: {
+        SET_PROFILES: (state, profiles) => {
+            state.profiles = profiles;
+        },
+    },
     actions: {
         changeProfileDetails: async (
             { commit },
@@ -28,5 +36,17 @@ export default {
                 throw error;
             }
         },
+        fetchAllProfiles: async ({ commit }, _payload) => {
+            try {
+                const response = await axios.get(`/profiles`);
+                commit('SET_PROFILES', response.data);
+                return response.data;
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
+        }
     },
 };
