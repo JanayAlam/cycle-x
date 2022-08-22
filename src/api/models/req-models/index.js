@@ -7,4 +7,6 @@ module.exports = {
     profileReqModel: require('./profile/update-profile'),
     userReqModel: require('./user/update-user'),
     hubReqModel: require('./hub/hub-req-model'),
+    cycleReqModel: require('./cycle/cycle-req-model'),
+    cycleUpdateModel: require('./cycle/cycle-update-model'),
 };

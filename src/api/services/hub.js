@@ -20,9 +20,9 @@ const create = ({ name, lng, lat }) => {
 const update = async (id, { name, lng, lat }) => {
     let hub = await findByProperty('id', id);
     if (!hub) throw new BadRequestError('Hub not found with provided id');
-    hub.name = name;
-    hub.longitude = lng;
-    hub.latitude = lat;
+    hub.name = name ? name : hub.name;
+    hub.longitude = lng ? lng : hub.longitude;
+    hub.latitude = lat ? lat : hub.latitude;
     return hub.save();
 };
 
