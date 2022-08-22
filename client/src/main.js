@@ -6,6 +6,7 @@ import './assets/css/reset.css';
 import './assets/css/style.css';
 import router from './router';
 import store from './store';
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 // axios configurations
 axios.defaults.baseURL = 'http://localhost:5000/api/v1';
@@ -32,6 +33,11 @@ store
             .component('font-awesome-icon', FontAwesomeIcon)
             .use(store)
             .use(router)
+            .use(VueGoogleMaps, {
+                load: {
+                    key: 'AIzaSyBUQDNOKEfS5-kuJXZ4UOTSTvRMNCxKNlA',
+                },
+            })
             .mount('#app');
     })
     .catch((err) => console.log(err));
