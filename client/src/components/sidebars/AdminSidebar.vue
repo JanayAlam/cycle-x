@@ -20,7 +20,7 @@
         <router-link
             :to="{ name: 'admin-cycles' }"
             class="list-group-item list-group-item-action"
-            :class="{ active: active === 'admin-cycle' }"
+            :class="{ active: active === 'admin-cycles' }"
         >
             <font-awesome-icon icon="fa-solid fa-person-biking" />
             <span class="ms-2">Cycles</span>
