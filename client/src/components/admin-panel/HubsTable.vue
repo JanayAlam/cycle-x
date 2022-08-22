@@ -33,7 +33,7 @@ export default {
     },
     components: { Table },
     setup() {
-        const dataHeaders = ['ID', 'Name', 'Latitude', 'Longitude'];
+        const dataHeaders = ['ID', 'Name', 'Longitude', 'Latitude'];
         return {
             dataHeaders,
             withAction: true,

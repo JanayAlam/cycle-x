@@ -49,15 +49,15 @@
                     </div> -->
                     </div>
                     <div class="mb-2">
-                        <label for="lat" class="form-label mb-1"
-                            >Latitude</label
+                        <label for="lng" class="form-label mb-1"
+                            >Longitude</label
                         >
                         <input
-                            v-model="state.info.lat"
+                            v-model="state.info.lng"
                             type="text"
                             class="form-control"
-                            id="lat"
-                            placeholder="Latitude of the location"
+                            id="lng"
+                            placeholder="Longitude of the location"
                         />
                         <!-- <input
                         v-model="info.name"
@@ -77,15 +77,15 @@
                     </div> -->
                     </div>
                     <div class="mb-2">
-                        <label for="lng" class="form-label mb-1"
-                            >Longitude</label
+                        <label for="lat" class="form-label mb-1"
+                            >Latitude</label
                         >
                         <input
-                            v-model="state.info.lng"
+                            v-model="state.info.lat"
                             type="text"
                             class="form-control"
-                            id="lng"
-                            placeholder="Longitude of the location"
+                            id="lat"
+                            placeholder="Latitude of the location"
                         />
                         <!-- <input
                         v-model="info.name"
@@ -202,7 +202,9 @@ export default {
 
         const createHandler = () => {
             const data = {
-                ...state.info,
+                name: state.info.name,
+                lng: state.info.lng,
+                lat: state.info.lat,
             };
             axios
                 .post(`/hubs`, data)
@@ -215,6 +217,7 @@ export default {
                     });
                     modalToggler();
                     state.info = {
+                        id: '',
                         name: '',
                         lng: '',
                         lat: '',
@@ -242,16 +245,21 @@ export default {
             modalForSelector('edit');
         };
 
-        const editHandler = (id) => {
+        const editHandler = () => {
             axios
-                .get(`/hubs/{id}`, data)
+                .patch(`/hubs/${state.info.id}`, {
+                    name: state.info.name,
+                    lng: state.info.lng,
+                    lat: state.info.lat,
+                })
                 .then((res) => {
-                    state.data.hubs.push({
-                        id: res.data.id,
-                        name: res.data.name,
-                        longitude: res.data.longitude,
-                        latitude: res.data.latitude,
-                    });
+                    const hub = state.data.hubs.filter(
+                        (h) => h.id === state.info.id
+                    )[0];
+                    hub.id = res.data.id;
+                    hub.name = res.data.name;
+                    hub.longitude = res.data.longitude;
+                    hub.latitude = res.data.latitude;
                     modalToggler();
                     store.dispatch('pushNotification', {
                         type: 'success',
