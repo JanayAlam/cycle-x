@@ -27,6 +27,10 @@ const routes = [
         path: '/accounts',
         router: require('./account'),
     },
+    {
+        path: '/transactions',
+        router: require('./transaction'),
+    },
 ];
 
 module.exports = (app) => {

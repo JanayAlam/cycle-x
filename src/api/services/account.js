@@ -1,6 +1,13 @@
 const { BadRequestError, NotAcceptableError } = require('../errors/apiErrors');
 const Account = require('../models/data-models/Account');
 
+const findByProperty = (key, value) => {
+    if (key === 'id') {
+        return Account.findById(value);
+    }
+    return Account.findOne({ [key]: value });
+};
+
 const create = async () => {
     // 1: create a new account object
     const account = new Account({});
@@ -23,6 +30,7 @@ const updateBalance = async (accountId, amount, method) => {
 };
 
 module.exports = {
+    findByProperty,
     create,
     updateBalance,
 };

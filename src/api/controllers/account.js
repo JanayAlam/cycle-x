@@ -1,21 +1,12 @@
-const { cycle: cycleService, account: accountService } = require('../services');
+const { account: accountService } = require('../services');
 const { BadRequestError } = require('../errors/apiErrors');
-const Ride = require('../models/data-models/Ride');
-const Profile = require('../models/data-models/Profile');
 
-const recharge = async (req, res, next) => {
-    const { _id: userId } = req.user;
-    const { amount } = req.body;
+
+const getHandler = async (req, res, next) => {
+    const { accountId } = req.params;
     try {
-        const profile = await Profile.findOne({ user: userId });
-        if (!profile) {
-            throw new BadRequestError('Profile not found');
-        }
-        const account = await accountService.updateBalance(
-            profile.account,
-            amount,
-            'add'
-        );
+        const account = await accountService.findByProperty('id', accountId);
+        if (!account) throw new BadRequestError('Account not found');
         return res.status(200).json(account);
     } catch (err) {
         next(err);
@@ -23,5 +14,5 @@ const recharge = async (req, res, next) => {
 };
 
 module.exports = {
-    recharge,
+    getHandler,
 };
