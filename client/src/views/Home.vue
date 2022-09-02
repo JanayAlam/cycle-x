@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import { mapGetters } from 'vuex';
 import { QrcodeStream } from 'vue3-qrcode-reader';
 import axios from 'axios';
@@ -78,6 +77,9 @@ export default {
     },
     created() {
         this.getAllHubs();
+    },
+    setup() {
+        document.title = 'Cycle X';
     },
     data() {
         return {

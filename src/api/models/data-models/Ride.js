@@ -5,6 +5,10 @@ const rideSchema = new Schema(
         finishedTime: {
             type: Date,
         },
+        isFinished: {
+            type: Boolean,
+            default: false,
+        },
         profile: {
             type: Schema.Types.ObjectId,
             ref: 'Profile',

@@ -9,6 +9,7 @@ const profileService = require('./profile');
 const userService = require('./user');
 const emailService = require('./email');
 const accountService = require('./account');
+const rankService = require('./rank');
 
 const register = async ({
     nid,
@@ -38,16 +39,19 @@ const register = async ({
     emailService.sendEmailVerificationToken(email, token);
     // 4: creating an account
     const account = await accountService.create();
-    // 5: creating profile
+    // 5: creating rank
+    const rank = await rankService.create();
+    // 6: creating profile
     const profilePayload = await profileService.create({
         firstName,
         lastName,
         dob,
+        rankId: rank._id,
         userId: user._id,
         accountId: account._id,
     });
     await profilePayload.save();
-    // 6: respond with the user object
+    // 7: respond with the user object
     return user;
 };
 

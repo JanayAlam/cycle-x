@@ -19,6 +19,10 @@ const routes = [
         path: '/cycles',
         router: require('./cycle'),
     },
+    {
+        path: '/systems',
+        router: require('./system'),
+    },
 ];
 
 module.exports = (app) => {

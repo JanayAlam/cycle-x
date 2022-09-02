@@ -27,7 +27,7 @@ const create = async ({
     profilePhoto,
     userId,
     dob,
-    rank,
+    rankId,
     accountId,
     mute,
 }) => {
@@ -43,7 +43,7 @@ const create = async ({
         dob,
         user: userId,
         account: accountId,
-        rank,
+        rank: rankId,
         mute,
     });
     return profile.save();
