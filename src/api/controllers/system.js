@@ -1,4 +1,4 @@
-const { cycle: cycleService } = require('../services');
+const { cycle: cycleService, account: accountService } = require('../services');
 const { BadRequestError, NotAcceptableError } = require('../errors/apiErrors');
 const Ride = require('../models/data-models/Ride');
 const Profile = require('../models/data-models/Profile');
@@ -59,7 +59,6 @@ const finishRiding = async (req, res, next) => {
             profile: profile._id,
             isFinished: false,
         });
-        console.log(ride);
         if (!ride) {
             throw new BadRequestError('Could not find a ride');
         }
@@ -69,13 +68,8 @@ const finishRiding = async (req, res, next) => {
         const sec =
             (ride.finishedTime.getTime() - ride.createdAt.getTime()) / 1000;
         let cost = (sec / (60 * 60)) * 15;
-        cost = cost + cost * (profile.rank.discount / 100);
-        await Account.findOneAndUpdate(
-            { _id: profile.account.id },
-            {
-                balance: profile.account.balance - cost,
-            }
-        );
+        cost = cost - cost * (profile.rank.discount / 100);
+        await accountService.updateBalance(profile.account._id, cost, 'sub');
         return res.status(200).json(updatedRide);
     } catch (err) {
         next(err);

@@ -23,6 +23,10 @@ const routes = [
         path: '/systems',
         router: require('./system'),
     },
+    {
+        path: '/accounts',
+        router: require('./account'),
+    },
 ];
 
 module.exports = (app) => {
