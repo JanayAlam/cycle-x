@@ -151,14 +151,13 @@ export default {
             let cycle_id = JSON.parse(this.decodedString);
         },
         async getAllHubs() {
-            const res = await axios.get('hubs/');
+            const res = await axios.get('/hubs');
             this.hubs = res.data.map((h) => {
                 return {
                     name: h.name,
                     loc: { lat: h.latitude, lng: h.longitude },
                 };
             });
-            console.log(this.hubs);
         },
     },
 };

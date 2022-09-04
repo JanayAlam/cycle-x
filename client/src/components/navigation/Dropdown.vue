@@ -1,5 +1,5 @@
 <template>
-    <div class="nav-item dropdown">
+    <div class="nav-item dropdown d-flex align-items-center">
         <button
             class="btn btn-sm dropdown-toggle d-flex justify-content-center align-items-center dark-white"
             id="navbarDropdown"

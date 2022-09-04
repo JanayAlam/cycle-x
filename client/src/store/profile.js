@@ -47,6 +47,19 @@ export default {
                 }
                 throw error;
             }
-        }
+        },
+        getAccount: async ({ commit, getters }, _payload) => {
+            try {
+                profile =  getters.getProfile;
+                const response = await axios.get(`/accounts/${profile.account}`);
+                commit('SET_ACCOUNT', response.data);
+                return response.data;
+            } catch (error) {
+                if (error.response) {
+                    throw error.response.data;
+                }
+                throw error;
+            }
+        },
     },
 };

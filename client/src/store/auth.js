@@ -6,11 +6,13 @@ export default {
         token: null,
         user: null,
         profile: null,
+        account: null,
     },
     getters: {
         getToken: (state) => state.token,
         getUser: (state) => state.user,
         getProfile: (state) => state.profile,
+        getAccount: (state) => state.account,
         isAuthenticated: (state) => state.token && state.user && state.profile,
     },
     mutations: {
@@ -22,6 +24,9 @@ export default {
         },
         SET_PROFILE: (state, profile) => {
             state.profile = profile;
+        },
+        SET_ACCOUNT: (state, account) => {
+            state.account = account;
         },
     },
     actions: {
