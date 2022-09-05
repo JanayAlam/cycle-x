@@ -39,8 +39,6 @@ export default {
     components: { AdminSidebar, Bar },
     setup() {
         document.title = 'Admin dashboard';
-
-        return {};
     },
     async created() {
         const response = await axios.get('/systems/get-status');

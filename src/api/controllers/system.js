@@ -154,7 +154,10 @@ const getStatus = async (_req, res, next) => {
 
         const result = {
             labels: ['BRONZE', 'SILVER', 'GOLD', 'ELITE'],
-            datasets: [{ data: [bronze, silver, gold, elite] }],
+            datasets: [{
+                backgroundColor: '#198754',
+                data: [bronze, silver, gold, elite]
+            }],
         };
 
         return res.status(200).json(result);
