@@ -5,7 +5,13 @@
                 <admin-sidebar active="admin-dashboard" />
             </div>
             <div class="a-dashboard-main col-md-9 col-sm-8">
-                This is a main section
+                <div class="fw-bold text-success mb-2 text-center" style="font-size: 1.5rem;">Number of users with ranks</div>
+                <Bar
+                    :chart-options="chartOptions"
+                    :chart-data="chartData"
+                    width="1000"
+                    height="500"
+                />
             </div>
         </div>
     </div>
@@ -13,14 +19,43 @@
 
 <script>
 import AdminSidebar from '@/components/sidebars/AdminSidebar.vue';
+import { Bar } from 'vue-chartjs';
+import {
+    Chart as ChartJS,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+} from 'chart.js';
+import axios from 'axios';
+
+ChartJS.register(
+    BarElement,
+    CategoryScale,
+    LinearScale
+);
 
 export default {
     name: 'AdminDashboard',
-    components: { AdminSidebar },
+    components: { AdminSidebar, Bar },
     setup() {
         document.title = 'Admin dashboard';
 
         return {};
+    },
+    async created() {
+        const response = await axios.get('/systems/get-status');
+        this.chartData = response.data;
+    },
+    data() {
+        return {
+            chartData: {
+                labels: ['BRONZE', 'SILVER', 'GOLD', 'ELITE'],
+                datasets: [{ data: [0, 0, 0, 0] }],
+            },
+            chartOptions: {
+                responsive: true,
+            },
+        };
     },
 };
 </script>

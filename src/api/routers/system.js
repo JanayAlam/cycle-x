@@ -30,4 +30,11 @@ router.patch(
     systemController.rankDown
 );
 
+router.get(
+    '/get-status',
+    passport.authenticate('jwt', { session: false }, null),
+    adminOnly,
+    systemController.getStatus
+);
+
 module.exports = router;

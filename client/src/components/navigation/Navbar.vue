@@ -1,16 +1,38 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light navigation-bar bg-success bg-gradient">
+    <nav
+        class="navbar navbar-expand-lg navbar-light navigation-bar bg-success bg-gradient"
+    >
         <div class="container rounded navigation-container">
-            <router-link :to="{ name: 'home' }" class="navbar-brand dark-white">CycleX</router-link>
-            <button class="navbar-toggler dark-white" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <router-link :to="{ name: 'home' }" class="navbar-brand dark-white"
+                >CycleX</router-link
+            >
+            <button
+                class="navbar-toggler dark-white"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
                 <font-awesome-icon icon="fa-solid fa-bars" />
             </button>
+            <span v-if="isAuthenticated" class="text-light fw-bold">
+                <span v-if="profile.rank">{{ profile.rank.rankName }}</span>
+                <span v-else>BRONZE</span>
+            </span>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="ms-auto">
-                    <div v-if="isAuthenticated" class="d-flex justify-content-center align-items-center">
-                        <button class="btn"><font-awesome-icon icon="fa-solid fa-bell" class="dark-white" /></button>
+                    <div
+                        v-if="isAuthenticated"
+                        class="d-flex justify-content-center align-items-center"
+                    >
+                        <button class="btn">
+                            <font-awesome-icon
+                                icon="fa-solid fa-bell"
+                                class="dark-white"
+                            />
+                        </button>
                         <Dropdown :logout="accountLogout" />
                     </div>
                     <AuthButtons v-else />
@@ -24,8 +46,8 @@
 import AuthButtons from '@/components/navigation/AuthButtons.vue';
 import Dropdown from '@/components/navigation/Dropdown.vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router'
-import {computed} from "@vue/reactivity";
+import { useRouter } from 'vue-router';
+import { computed } from '@vue/reactivity';
 
 export default {
     name: 'Navbar',
@@ -37,12 +59,16 @@ export default {
         const isAuthenticated = computed(() => store.getters.isAuthenticated);
         const accountLogout = () => {
             store.dispatch('logout');
-            store.dispatch('pushNotification', { type: 'info', msg: 'Logged out.' });
+            store.dispatch('pushNotification', {
+                type: 'info',
+                msg: 'Logged out.',
+            });
             router.replace({ name: 'login' });
-        }
-        return { isAuthenticated, accountLogout };
-    }
-}
+        };
+        const profile = computed(() => store.getters.getProfile);
+        return { isAuthenticated, profile, accountLogout };
+    },
+};
 </script>
 
 <style scoped>

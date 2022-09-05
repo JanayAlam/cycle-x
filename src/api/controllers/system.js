@@ -128,9 +128,45 @@ const rankDown = async (req, res, next) => {
     }
 };
 
+const getStatus = async (_req, res, next) => {
+    try {
+        const profiles = await Profile.find().populate({
+            path: 'rank',
+            select: '_id rankName discount',
+        });
+
+        let bronze = 0;
+        let silver = 0;
+        let gold = 0;
+        let elite = 0;
+
+        profiles.forEach((profile) => {
+            if (profile.rank && profile.rank.rankName === 'SILVER') {
+                silver++;
+            } else if (profile.rank && profile.rank.rankName === 'GOLD') {
+                gold++;
+            } else if (profile.rank && profile.rank.rankName === 'ELITE') {
+                elite++;
+            } else {
+                bronze++;
+            }
+        });
+
+        const result = {
+            labels: ['BRONZE', 'SILVER', 'GOLD', 'ELITE'],
+            datasets: [{ data: [bronze, silver, gold, elite] }],
+        };
+
+        return res.status(200).json(result);
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     bookCycle,
     finishRiding,
     rankUp,
     rankDown,
+    getStatus,
 };
