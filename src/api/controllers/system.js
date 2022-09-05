@@ -2,7 +2,7 @@ const { cycle: cycleService, account: accountService } = require('../services');
 const { BadRequestError, NotAcceptableError } = require('../errors/apiErrors');
 const Ride = require('../models/data-models/Ride');
 const Profile = require('../models/data-models/Profile');
-const Account = require('../models/data-models/Account');
+const Rank = require('../models/data-models/Rank');
 
 const bookCycle = async (req, res, next) => {
     const { _id: userId } = req.user;
@@ -76,7 +76,34 @@ const finishRiding = async (req, res, next) => {
     }
 };
 
+const rankUp = async (req, res, next) => {
+    const { profileId } = req.body;
+    try {
+        const profile = await Profile.findById(profileId);
+        if (!profile) throw new BadRequestError('Profile not found');
+        const rank = await Rank.findById(profile.rank);
+        if (!rank) throw new BadRequestError('Rank not found');
+        if (rank.rankName == 'BRONZE') {
+            rank.rankName = 'SILVER';
+            rank.discount = 5;
+        } else if (rank.rankName == 'SILVER') {
+            rank.rankName = 'GOLD';
+            rank.discount = 10;
+        } else if (rank.rankName == 'GOLD') {
+            rank.rankName = 'ELITE';
+            rank.discount = 20;
+        } else {
+            throw new BadRequestError('Could not upgrade rank of this profile');
+        }
+        const updatedRank = await rank.save();
+        return res.status(200).json(updatedRank);
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     bookCycle,
     finishRiding,
+    rankUp,
 };
