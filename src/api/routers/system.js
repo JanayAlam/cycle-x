@@ -37,4 +37,10 @@ router.get(
     systemController.getStatus
 );
 
+router.get(
+    '/ride/get-status',
+    passport.authenticate('jwt', { session: false }, null),
+    systemController.getRidingStatus
+);
+
 module.exports = router;

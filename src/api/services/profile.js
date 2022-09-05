@@ -16,15 +16,25 @@ const _unlinkProfilePhoto = (img) => {
 
 const findByProperty = (key, value) => {
     if (key === 'id') {
-        return Profile.findById(value).populate({
+        return Profile.findById(value)
+            .populate({
+                path: 'rank',
+                select: '_id rankName discount',
+            })
+            .populate({
+                path: 'account',
+                select: '_id balance',
+            });
+    }
+    return Profile.findOne({ [key]: value })
+        .populate({
             path: 'rank',
             select: '_id rankName discount',
+        })
+        .populate({
+            path: 'account',
+            select: '_id balance',
         });
-    }
-    return Profile.findOne({ [key]: value }).populate({
-        path: 'rank',
-        select: '_id rankName discount',
-    });
 };
 
 const create = async ({

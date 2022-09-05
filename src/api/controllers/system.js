@@ -163,10 +163,26 @@ const getStatus = async (_req, res, next) => {
     }
 };
 
+const getRidingStatus = async (req, res, next) => {
+    const { _id: userId } = req.user;
+    try {
+        const profile = await Profile.findOne({ user: userId });
+        if (!profile) throw new BadRequestError('Profile not found');
+        const ride = await Ride.findOne({
+            profile: profile._id,
+            isFinished: false,
+        });
+        return res.status(200).json(ride ? false : true);
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     bookCycle,
     finishRiding,
     rankUp,
     rankDown,
     getStatus,
+    getRidingStatus,
 };

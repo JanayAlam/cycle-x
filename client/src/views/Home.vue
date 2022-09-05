@@ -39,7 +39,6 @@
             </div>
 
             <p>{{ error }}</p>
-            <p class="bg-white fs-3">{{ decodedString }}</p>
             <qrcode-stream @init="OnInit" @decode="onDecode"></qrcode-stream>
         </div>
         <!--Current Location & QR Code Scanner-->
@@ -140,6 +139,8 @@ export default {
         },
         onDecode(decodedString) {
             this.decodedString = decodedString;
+            this.parseJSON();
+            this.closeQRCodeScanner();
         },
         openQRCodeScanner() {
             this.isQRStreamVisible = true;
@@ -147,8 +148,22 @@ export default {
         closeQRCodeScanner() {
             this.isQRStreamVisible = false;
         },
-        parseJSON() {
-            let cycle_id = JSON.parse(this.decodedString);
+        async parseJSON() {
+            let cycle = JSON.parse(this.decodedString);
+            try {
+                await axios.patch('/systems/book', cycle);
+                this.$store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'Cycle booked',
+                });
+            } catch (error) {
+                this.$store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: error.response.data
+                        ? error.response.data.message
+                        : error.message,
+                });
+            }
         },
         async getAllHubs() {
             const res = await axios.get('/hubs');
