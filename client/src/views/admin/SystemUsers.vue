@@ -6,7 +6,7 @@
             </div>
             <div class="a-dashboard-main col-md-9 col-sm-8">
                 <div v-for="profile in profiles" :key="profile.id">
-                    <div class="card c-card w-100">
+                    <div class="card c-card w-100 mb-2">
                         <div class="card-body">
                             <div class="card-title d-flex align-items-center">
                                 <img
@@ -23,19 +23,29 @@
                             <p class="card-text mt-4">
                                 Date of Birth: {{ profile.dob }}
                             </p>
+                            <div v-if="profile.rank" class="fw-bold mt-2">
+                                Rank: {{ profile.rank.rankName }}
+                            </div>
+                            <div v-else class="fw-bold mt-2">Rank: BRONZE</div>
                             <hr />
                             <div class="d-flex align-items-center">
-                                <button class="btn btn-sm btn-success">
+                                <button
+                                    class="btn btn-sm btn-success"
+                                    @click="rankUp(profile.id)"
+                                >
                                     <font-awesome-icon
-                                        icon="fa-solid fa-timeline"
+                                        icon="fa-solid fa-thumbs-up"
                                     />
-                                    View profile logs
+                                    Rank Up
                                 </button>
-                                <button class="btn btn-sm btn-danger ms-2">
+                                <button
+                                    class="btn btn-sm btn-danger ms-2"
+                                    @click="rankDown(profile.id)"
+                                >
                                     <font-awesome-icon
-                                        icon="fa-solid fa-microphone-lines-slash"
+                                        icon="fa-solid fa-thumbs-down"
                                     />
-                                    Mute this profile
+                                    Rank Down
                                 </button>
                             </div>
                         </div>
@@ -50,6 +60,7 @@
 import AdminSidebar from '@/components/sidebars/AdminSidebar.vue';
 import { computed } from '@vue/reactivity';
 import { useStore } from 'vuex';
+import axios from 'axios';
 
 export default {
     name: 'SystemUsers',
@@ -61,7 +72,48 @@ export default {
         document.title = 'System users';
         const store = useStore();
         const profiles = computed(() => store.getters.getProfiles);
-        return { profiles };
+
+        const rankUp = async (id) => {
+            try {
+                await axios.patch('/systems/rank-up', {
+                    profileId: id,
+                });
+                await store.dispatch('fetchAllProfiles');
+                store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'Ranked up successfully',
+                });
+            } catch (error) {
+                store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: error.response.data
+                        ? error.response.data.message
+                        : error.message,
+                });
+            }
+        };
+
+        const rankDown = async (id) => {
+            try {
+                await axios.patch('/systems/rank-down', {
+                    profileId: id,
+                });
+                await store.dispatch('fetchAllProfiles');
+                store.dispatch('pushNotification', {
+                    type: 'success',
+                    msg: 'Ranked up successfully',
+                });
+            } catch (error) {
+                store.dispatch('pushNotification', {
+                    type: 'danger',
+                    msg: error.response.data
+                        ? error.response.data.message
+                        : error.message,
+                });
+            }
+        };
+
+        return { profiles, rankUp, rankDown };
     },
 };
 </script>

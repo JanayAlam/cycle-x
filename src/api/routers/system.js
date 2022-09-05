@@ -23,4 +23,11 @@ router.patch(
     systemController.rankUp
 );
 
+router.patch(
+    '/rank-down',
+    passport.authenticate('jwt', { session: false }, null),
+    adminOnly,
+    systemController.rankDown
+);
+
 module.exports = router;

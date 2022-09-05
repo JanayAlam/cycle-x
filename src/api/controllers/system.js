@@ -102,8 +102,35 @@ const rankUp = async (req, res, next) => {
     }
 };
 
+const rankDown = async (req, res, next) => {
+    const { profileId } = req.body;
+    try {
+        const profile = await Profile.findById(profileId);
+        if (!profile) throw new BadRequestError('Profile not found');
+        const rank = await Rank.findById(profile.rank);
+        if (!rank) throw new BadRequestError('Rank not found');
+        if (rank.rankName == 'SILVER') {
+            rank.rankName = 'BRONZE';
+            rank.discount = 0;
+        } else if (rank.rankName == 'GOLD') {
+            rank.rankName = 'SILVER';
+            rank.discount = 5;
+        } else if (rank.rankName == 'ELITE') {
+            rank.rankName = 'GOLD';
+            rank.discount = 10;
+        } else {
+            throw new BadRequestError('Could not upgrade rank of this profile');
+        }
+        const updatedRank = await rank.save();
+        return res.status(200).json(updatedRank);
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     bookCycle,
     finishRiding,
     rankUp,
+    rankDown,
 };

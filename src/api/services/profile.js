@@ -33,7 +33,9 @@ const create = async ({
 }) => {
     let profile = await findByProperty('user', userId);
     if (profile) {
-        throw new BadRequestError('Profile already exist with the provided user');
+        throw new BadRequestError(
+            'Profile already exist with the provided user'
+        );
     }
 
     profile = new Profile({
@@ -49,7 +51,7 @@ const create = async ({
     return profile.save();
 };
 
-const update = async (userId, { firstName, lastName, dob, rank, mute, }) => {
+const update = async (userId, { firstName, lastName, dob, rank, mute }) => {
     // 1: get the profile
     const profile = await findByProperty('user', userId);
     if (!profile) throw new NotFoundError('Profile not found');
@@ -65,7 +67,10 @@ const update = async (userId, { firstName, lastName, dob, rank, mute, }) => {
 
 const getAllProfile = () => {
     // 1: get all the profiles and return
-    return Profile.find();
+    return Profile.find().populate({
+        path: 'rank',
+        select: '_id rankName discount',
+    });
 };
 
 const changeProfilePhoto = async (userId, filename) => {
@@ -87,7 +92,9 @@ const deleteProfilePhoto = async (userId) => {
     if (!profile) throw new NotFoundError('Profile not found');
     // 2: check the profile photo if it is set to default or not
     if (profile.profilePhoto === '/default/default.png')
-        throw new BadRequestError('The default profile photo cannot be deleted');
+        throw new BadRequestError(
+            'The default profile photo cannot be deleted'
+        );
     // 3: unlink the photo if it is not set to default
     const photo = profile.profilePhoto;
     const isError = _unlinkProfilePhoto(photo);
